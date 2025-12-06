@@ -43,7 +43,7 @@ export default function NewCase() {
       <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
           <h1 className="text-4xl font-bold text-white">Dodaj nową sprawę</h1>
-          
+
           <div className="flex w-full justify-center">
             <UploadImage
               title={"Upload PDF"}
@@ -52,12 +52,9 @@ export default function NewCase() {
               maxFileNumber={1}
             />
           </div>
-          
+
           <div className="flex gap-4">
-            <Button
-              variant="outline"
-              onClick={() => router.back()}
-            >
+            <Button variant="outline" onClick={() => router.back()}>
               Anuluj
             </Button>
             <Button
@@ -73,4 +70,3 @@ export default function NewCase() {
     </>
   );
 }
-

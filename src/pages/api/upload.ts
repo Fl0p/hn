@@ -53,11 +53,13 @@ export default async function handler(
       body: pdfBuffer,
     });
 
-    const responseText = await externalRes.text();
+    const responseText = (await externalRes.json()) as {
+      response: string;
+    };
 
     return res.status(200).json({
       status: "sent",
-      forwardedResponse: responseText,
+      forwardedResponse: responseText.response ?? "",
     });
   } catch (err) {
     console.error("Upload error:", err);

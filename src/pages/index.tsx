@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { BadgeCheckIcon, ChevronRightIcon } from "lucide-react";
-import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import {
   Item,
@@ -10,36 +9,12 @@ import {
   ItemMedia,
   ItemTitle,
 } from "~/components/ui/item";
-import { UploadImage } from "~/components/upload-pdf";
 
 import { api } from "~/utils/api";
 import Link from "next/link";
 
 export default function Home() {
-  const queryClient = api.useUtils();
   const { data: submissions } = api.post.getAll.useQuery();
-  const { mutate, isPending: isCreating } = api.post.create.useMutation({
-    onSuccess: async () => {
-      void (await queryClient.post.getAll.invalidate());
-      setFiles([]);
-    },
-  });
-  const [files, setFiles] = useState<File[]>([]);
-
-  async function sendPdf(file: File) {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data: unknown = await res.json();
-    console.log(data);
-    mutate({ name: file.name + Date.now().toString() });
-    return data;
-  }
 
   return (
     <>
@@ -50,6 +25,11 @@ export default function Home() {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
+          <Link href="/case/new">
+            <Button variant="default" size="lg">
+              Dodaj sprawę
+            </Button>
+          </Link>
           <div className="w-full max-w-2xl">
             <label
               htmlFor="case-search"
@@ -64,21 +44,6 @@ export default function Home() {
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
-          <div className="flex w-full justify-center">
-            <UploadImage
-              title={"Upload PDF"}
-              files={files}
-              setFiles={setFiles}
-              maxFileNumber={1}
-            />
-          </div>
-          <Button
-            disabled={!files.length || isCreating}
-            variant="outline"
-            onClick={() => sendPdf(files[0]!)}
-          >
-            {isCreating ? "Creating submission..." : "Create submission"}
-          </Button>
           <p className="text-2xl text-white">
             {submissions?.length
               ? submissions.map((submission) => (

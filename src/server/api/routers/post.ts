@@ -66,6 +66,27 @@ export const postRouter = createTRPCRouter({
         },
       });
     }),
+  makeDecision: publicProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+        decisionPdfUrl: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.decisionPdf.create({
+        data: {
+          url: input.decisionPdfUrl,
+          postId: input.id,
+        },
+      });
+      await ctx.db.post.update({
+        where: { id: input.id },
+        data: {
+          status: SubmissionStatus.PROLONGATED,
+        },
+      });
+    }),
 
   getAll: publicProcedure.query(async ({ ctx }) => {
     const posts = await ctx.db.post.findMany({

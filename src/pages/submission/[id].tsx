@@ -43,12 +43,26 @@ const QuestionPage = ({ id }: Props) => {
       },
     },
   );
+  const { mutate: makeDecision, isPending: isDecisionMaking } =
+    api.post.makeDecision.useMutation({
+      onSuccess: async () => {
+        void (await queryClient.post.getAll.invalidate());
+        void (await queryClient.post.getPostById.invalidate({ id }));
+      },
+    });
 
   const handleProlongate = () => {
     const performProlongation = {
       prolongatedPdfUrl: "prolongation.pdf" + Date.now().toString(),
     };
     mutate({ id, prolongatedPdfUrl: performProlongation.prolongatedPdfUrl });
+  };
+
+  const handleMakeDecision = () => {
+    const performDecision = {
+      decisionPdfUrl: "decision.pdf" + Date.now().toString(),
+    };
+    makeDecision({ id, decisionPdfUrl: performDecision.decisionPdfUrl });
   };
 
   const documentSections: {
@@ -84,13 +98,22 @@ const QuestionPage = ({ id }: Props) => {
         <Button variant="link" asChild>
           <Link href="/">Powrót</Link>
         </Button>
-        <Button
-          variant="outline"
-          onClick={handleProlongate}
-          disabled={isProlongating}
-        >
-          {isProlongating ? "Przedłużanie..." : "Przedłuż"}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={handleProlongate}
+            disabled={isProlongating}
+          >
+            {isProlongating ? "Przedłużanie..." : "Przedłuż"}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleMakeDecision}
+            disabled={isDecisionMaking}
+          >
+            {isDecisionMaking ? "Podejmowanie decyzji..." : "Podejmij decyzję"}
+          </Button>
+        </div>
       </div>
 
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">

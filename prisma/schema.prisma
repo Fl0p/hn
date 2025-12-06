@@ -11,14 +11,19 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+// Case - Administrative case/matter (Sprava)
 model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    status SubmissionStatus @default(INITIALIZED)
+    id          Int              @id @default(autoincrement())
+    name        String
+    caseNumber  String           @default("")
+    partyType   String           @default("")
+    createdAt   DateTime         @default(now())
+    updatedAt   DateTime         @updatedAt
+    status      SubmissionStatus @default(INITIALIZED)
 
     @@index([name])
+    @@index([caseNumber])
+    @@index([partyType])
 }
 
 enum SubmissionStatus {

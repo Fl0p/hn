@@ -904,6 +904,8 @@ export namespace Prisma {
   export type PostMinAggregateOutputType = {
     id: number | null
     name: string | null
+    caseNumber: string | null
+    partyType: string | null
     createdAt: Date | null
     updatedAt: Date | null
     status: $Enums.SubmissionStatus | null
@@ -912,6 +914,8 @@ export namespace Prisma {
   export type PostMaxAggregateOutputType = {
     id: number | null
     name: string | null
+    caseNumber: string | null
+    partyType: string | null
     createdAt: Date | null
     updatedAt: Date | null
     status: $Enums.SubmissionStatus | null
@@ -920,6 +924,8 @@ export namespace Prisma {
   export type PostCountAggregateOutputType = {
     id: number
     name: number
+    caseNumber: number
+    partyType: number
     createdAt: number
     updatedAt: number
     status: number
@@ -938,6 +944,8 @@ export namespace Prisma {
   export type PostMinAggregateInputType = {
     id?: true
     name?: true
+    caseNumber?: true
+    partyType?: true
     createdAt?: true
     updatedAt?: true
     status?: true
@@ -946,6 +954,8 @@ export namespace Prisma {
   export type PostMaxAggregateInputType = {
     id?: true
     name?: true
+    caseNumber?: true
+    partyType?: true
     createdAt?: true
     updatedAt?: true
     status?: true
@@ -954,6 +964,8 @@ export namespace Prisma {
   export type PostCountAggregateInputType = {
     id?: true
     name?: true
+    caseNumber?: true
+    partyType?: true
     createdAt?: true
     updatedAt?: true
     status?: true
@@ -1049,6 +1061,8 @@ export namespace Prisma {
   export type PostGroupByOutputType = {
     id: number
     name: string
+    caseNumber: string
+    partyType: string
     createdAt: Date
     updatedAt: Date
     status: $Enums.SubmissionStatus
@@ -1076,6 +1090,8 @@ export namespace Prisma {
   export type PostSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    caseNumber?: boolean
+    partyType?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     status?: boolean
@@ -1084,6 +1100,8 @@ export namespace Prisma {
   export type PostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    caseNumber?: boolean
+    partyType?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     status?: boolean
@@ -1092,6 +1110,8 @@ export namespace Prisma {
   export type PostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    caseNumber?: boolean
+    partyType?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     status?: boolean
@@ -1100,12 +1120,14 @@ export namespace Prisma {
   export type PostSelectScalar = {
     id?: boolean
     name?: boolean
+    caseNumber?: boolean
+    partyType?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     status?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt" | "status", ExtArgs["result"]["post"]>
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "caseNumber" | "partyType" | "createdAt" | "updatedAt" | "status", ExtArgs["result"]["post"]>
 
   export type $PostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Post"
@@ -1113,6 +1135,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
+      caseNumber: string
+      partyType: string
       createdAt: Date
       updatedAt: Date
       status: $Enums.SubmissionStatus
@@ -1541,6 +1565,8 @@ export namespace Prisma {
   interface PostFieldRefs {
     readonly id: FieldRef<"Post", 'Int'>
     readonly name: FieldRef<"Post", 'String'>
+    readonly caseNumber: FieldRef<"Post", 'String'>
+    readonly partyType: FieldRef<"Post", 'String'>
     readonly createdAt: FieldRef<"Post", 'DateTime'>
     readonly updatedAt: FieldRef<"Post", 'DateTime'>
     readonly status: FieldRef<"Post", 'SubmissionStatus'>
@@ -1927,6 +1953,8 @@ export namespace Prisma {
   export const PostScalarFieldEnum: {
     id: 'id',
     name: 'name',
+    caseNumber: 'caseNumber',
+    partyType: 'partyType',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     status: 'status'
@@ -2035,6 +2063,8 @@ export namespace Prisma {
     NOT?: PostWhereInput | PostWhereInput[]
     id?: IntFilter<"Post"> | number
     name?: StringFilter<"Post"> | string
+    caseNumber?: StringFilter<"Post"> | string
+    partyType?: StringFilter<"Post"> | string
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
     status?: EnumSubmissionStatusFilter<"Post"> | $Enums.SubmissionStatus
@@ -2043,6 +2073,8 @@ export namespace Prisma {
   export type PostOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    caseNumber?: SortOrder
+    partyType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     status?: SortOrder
@@ -2054,6 +2086,8 @@ export namespace Prisma {
     OR?: PostWhereInput[]
     NOT?: PostWhereInput | PostWhereInput[]
     name?: StringFilter<"Post"> | string
+    caseNumber?: StringFilter<"Post"> | string
+    partyType?: StringFilter<"Post"> | string
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
     status?: EnumSubmissionStatusFilter<"Post"> | $Enums.SubmissionStatus
@@ -2062,6 +2096,8 @@ export namespace Prisma {
   export type PostOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    caseNumber?: SortOrder
+    partyType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     status?: SortOrder
@@ -2078,6 +2114,8 @@ export namespace Prisma {
     NOT?: PostScalarWhereWithAggregatesInput | PostScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Post"> | number
     name?: StringWithAggregatesFilter<"Post"> | string
+    caseNumber?: StringWithAggregatesFilter<"Post"> | string
+    partyType?: StringWithAggregatesFilter<"Post"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
     status?: EnumSubmissionStatusWithAggregatesFilter<"Post"> | $Enums.SubmissionStatus
@@ -2085,6 +2123,8 @@ export namespace Prisma {
 
   export type PostCreateInput = {
     name: string
+    caseNumber?: string
+    partyType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     status?: $Enums.SubmissionStatus
@@ -2093,6 +2133,8 @@ export namespace Prisma {
   export type PostUncheckedCreateInput = {
     id?: number
     name: string
+    caseNumber?: string
+    partyType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     status?: $Enums.SubmissionStatus
@@ -2100,6 +2142,8 @@ export namespace Prisma {
 
   export type PostUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
+    caseNumber?: StringFieldUpdateOperationsInput | string
+    partyType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
@@ -2108,6 +2152,8 @@ export namespace Prisma {
   export type PostUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    caseNumber?: StringFieldUpdateOperationsInput | string
+    partyType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
@@ -2116,6 +2162,8 @@ export namespace Prisma {
   export type PostCreateManyInput = {
     id?: number
     name: string
+    caseNumber?: string
+    partyType?: string
     createdAt?: Date | string
     updatedAt?: Date | string
     status?: $Enums.SubmissionStatus
@@ -2123,6 +2171,8 @@ export namespace Prisma {
 
   export type PostUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
+    caseNumber?: StringFieldUpdateOperationsInput | string
+    partyType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
@@ -2131,6 +2181,8 @@ export namespace Prisma {
   export type PostUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    caseNumber?: StringFieldUpdateOperationsInput | string
+    partyType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
@@ -2183,6 +2235,8 @@ export namespace Prisma {
   export type PostCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    caseNumber?: SortOrder
+    partyType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     status?: SortOrder
@@ -2195,6 +2249,8 @@ export namespace Prisma {
   export type PostMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    caseNumber?: SortOrder
+    partyType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     status?: SortOrder
@@ -2203,6 +2259,8 @@ export namespace Prisma {
   export type PostMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    caseNumber?: SortOrder
+    partyType?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     status?: SortOrder

@@ -15,9 +15,9 @@ type Props = {
   title?: string;
 };
 
-const MAX_FILE_SIZE = 4000000;
+const MAX_FILE_SIZE = 40000000;
 // add extensions
-const ALLOWED_EXTENSION = ["jpg", "png", "jpeg"];
+const ALLOWED_EXTENSION = ["pdf"];
 
 export const UploadImage = ({
   files,

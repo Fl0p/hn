@@ -1,0 +1,30 @@
+{
+  "org_full_name": "",
+  "org_address": "",
+  "org_email": "",
+  "org_website": "",
+
+  "city": "",
+  "date": "",
+
+  "legal_year": "",
+  "legal_position": "",
+
+  "party_name": "",
+  "party_address": "",
+  "case_number": "",
+  "case_type": "",
+  "case_subject": "",
+
+  "new_deadline": "",
+
+  "access_address": "",
+  "access_hours": "",
+  "access_phone": "",
+
+  "justification_reason": "",
+
+  "minister_org_name": "",
+  "signatory_title": "",
+  "signatory_name": ""
+}

@@ -3,12 +3,14 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
+  getPostById: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const post = await ctx.db.post.findUnique({
+        where: { id: input.id },
+      });
+
+      return post ?? null;
     }),
 
   create: publicProcedure
@@ -22,10 +24,10 @@ export const postRouter = createTRPCRouter({
     }),
 
   getAll: publicProcedure.query(async ({ ctx }) => {
-    const post = await ctx.db.post.findMany({
+    const posts = await ctx.db.post.findMany({
       orderBy: { createdAt: "desc" },
     });
 
-    return post ?? null;
+    return posts ?? null;
   }),
 });

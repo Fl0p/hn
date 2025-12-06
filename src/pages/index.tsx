@@ -78,7 +78,7 @@ export default function Home() {
                     key={submission.id}
                     className="m-5"
                   >
-                    <Link href={`/submissions/${submission.id}`}>
+                    <Link href={`/submission/${submission.id}`}>
                       <ItemMedia>
                         <BadgeCheckIcon className="size-5" />
                       </ItemMedia>

@@ -13,13 +13,18 @@ datasource db {
 
 // Case - Administrative case/matter (Sprava)
 model Post {
-  id         Int              @id @default(autoincrement())
-  name       String
-  caseNumber String           @default("")
-  partyType  String           @default("")
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @updatedAt
-  status     SubmissionStatus @default(INITIALIZED)
+  id              String            @id @default(cuid())
+  name            String
+  initialPdf      InitialPdf?
+  conversationPdf ConversationPdf[]
+  prolongationPdf ProlongatedPdf[]
+  decisionPdf     DecisionPdf[]
+  initDate        String?           @default("2000-01-01")
+  caseNumber      String            @default("")
+  partyType       String            @default("")
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  status          SubmissionStatus  @default(INITIALIZED)
 
   @@index([name])
   @@index([caseNumber])
@@ -27,9 +32,57 @@ model Post {
 }
 
 enum SubmissionStatus {
-  PENDING
-  PROCESSING
-  COMPLETED
-  FAILED
   INITIALIZED
+  IN_PROGRESS
+  PROLONGATED
+  DECISION_MADE
+  COMPLETED
+}
+
+model InitialPdf {
+  id        String   @id @default(cuid())
+  url       String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId    String   @unique
+  post      Post     @relation(fields: [postId], references: [id])
+
+  @@index([url])
+  @@index([postId])
+}
+
+model ProlongatedPdf {
+  id        String   @id @default(cuid())
+  url       String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId    String   @unique
+  post      Post     @relation(fields: [postId], references: [id])
+
+  @@index([url])
+  @@index([postId])
+}
+
+model DecisionPdf {
+  id        String   @id @default(cuid())
+  url       String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId    String   @unique
+  post      Post     @relation(fields: [postId], references: [id])
+
+  @@index([url])
+  @@index([postId])
+}
+
+model ConversationPdf {
+  id        String   @id @default(cuid())
+  url       String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId    String   @unique
+  post      Post     @relation(fields: [postId], references: [id])
+
+  @@index([url])
+  @@index([postId])
 }

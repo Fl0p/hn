@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Button } from "~/components/ui/button";
 import { UploadImage } from "~/components/upload-pdf";
 import { api } from "~/utils/api";
+import Link from "next/link";
 
 export default function NewCase() {
   const router = useRouter();
@@ -27,9 +28,22 @@ export default function NewCase() {
       body: formData,
     });
 
-    const data: unknown = await res.json();
+    const data = (await res.json()) as {
+      initDate: string;
+      caseNumber: string;
+      partyType: string;
+      pdfUrl: string;
+    };
     console.log(data);
-    mutate({ name: file.name + Date.now().toString() });
+    mutate({
+      name: file.name + Date.now().toString(),
+      initDate: data.initDate ?? "2000-01-01",
+      caseNumber: data.caseNumber ? data.caseNumber : "1234567890",
+      partyType: data.partyType ? data.partyType : "private",
+      initialPdfUrl: data.pdfUrl
+        ? data.pdfUrl
+        : file.name + Date.now().toString(),
+    });
     return data;
   }
 
@@ -54,8 +68,8 @@ export default function NewCase() {
           </div>
 
           <div className="flex gap-4">
-            <Button variant="outline" onClick={() => router.back()}>
-              Anuluj
+            <Button variant="outline" asChild>
+              <Link href="/">Anuluj</Link>
             </Button>
             <Button
               disabled={!files.length || isCreating}

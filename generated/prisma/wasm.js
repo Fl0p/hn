@@ -96,11 +96,44 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.PostScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  initDate: 'initDate',
   caseNumber: 'caseNumber',
   partyType: 'partyType',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   status: 'status'
+};
+
+exports.Prisma.InitialPdfScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  postId: 'postId'
+};
+
+exports.Prisma.ProlongatedPdfScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  postId: 'postId'
+};
+
+exports.Prisma.DecisionPdfScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  postId: 'postId'
+};
+
+exports.Prisma.ConversationPdfScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  postId: 'postId'
 };
 
 exports.Prisma.SortOrder = {
@@ -112,16 +145,25 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
 exports.SubmissionStatus = exports.$Enums.SubmissionStatus = {
-  PENDING: 'PENDING',
-  PROCESSING: 'PROCESSING',
-  COMPLETED: 'COMPLETED',
-  FAILED: 'FAILED',
-  INITIALIZED: 'INITIALIZED'
+  INITIALIZED: 'INITIALIZED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  PROLONGATED: 'PROLONGATED',
+  DECISION_MADE: 'DECISION_MADE',
+  COMPLETED: 'COMPLETED'
 };
 
 exports.Prisma.ModelName = {
-  Post: 'Post'
+  Post: 'Post',
+  InitialPdf: 'InitialPdf',
+  ProlongatedPdf: 'ProlongatedPdf',
+  DecisionPdf: 'DecisionPdf',
+  ConversationPdf: 'ConversationPdf'
 };
 /**
  * Create the Client
@@ -170,13 +212,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// Case - Administrative case/matter (Sprava)\nmodel Post {\n  id         Int              @id @default(autoincrement())\n  name       String\n  caseNumber String           @default(\"\")\n  partyType  String           @default(\"\")\n  createdAt  DateTime         @default(now())\n  updatedAt  DateTime         @updatedAt\n  status     SubmissionStatus @default(INITIALIZED)\n\n  @@index([name])\n  @@index([caseNumber])\n  @@index([partyType])\n}\n\nenum SubmissionStatus {\n  PENDING\n  PROCESSING\n  COMPLETED\n  FAILED\n  INITIALIZED\n}\n",
-  "inlineSchemaHash": "d2509f57675999ffbe2da58d3b559061c646856bb66e7066de3127eddf1c0b36",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// Case - Administrative case/matter (Sprava)\nmodel Post {\n  id              String            @id @default(cuid())\n  name            String\n  initialPdf      InitialPdf?\n  conversationPdf ConversationPdf[]\n  prolongationPdf ProlongatedPdf[]\n  decisionPdf     DecisionPdf[]\n  initDate        String?           @default(\"2000-01-01\")\n  caseNumber      String            @default(\"\")\n  partyType       String            @default(\"\")\n  createdAt       DateTime          @default(now())\n  updatedAt       DateTime          @updatedAt\n  status          SubmissionStatus  @default(INITIALIZED)\n\n  @@index([name])\n  @@index([caseNumber])\n  @@index([partyType])\n}\n\nenum SubmissionStatus {\n  INITIALIZED\n  IN_PROGRESS\n  PROLONGATED\n  DECISION_MADE\n  COMPLETED\n}\n\nmodel InitialPdf {\n  id        String   @id @default(cuid())\n  url       String   @unique\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  postId    String   @unique\n  post      Post     @relation(fields: [postId], references: [id])\n\n  @@index([url])\n  @@index([postId])\n}\n\nmodel ProlongatedPdf {\n  id        String   @id @default(cuid())\n  url       String   @unique\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  postId    String   @unique\n  post      Post     @relation(fields: [postId], references: [id])\n\n  @@index([url])\n  @@index([postId])\n}\n\nmodel DecisionPdf {\n  id        String   @id @default(cuid())\n  url       String   @unique\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  postId    String   @unique\n  post      Post     @relation(fields: [postId], references: [id])\n\n  @@index([url])\n  @@index([postId])\n}\n\nmodel ConversationPdf {\n  id        String   @id @default(cuid())\n  url       String   @unique\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n  postId    String   @unique\n  post      Post     @relation(fields: [postId], references: [id])\n\n  @@index([url])\n  @@index([postId])\n}\n",
+  "inlineSchemaHash": "4ab8cb417fd8ed4e19bea579b0e73a5ff5d8326360b9150e202a9b28e82eb339",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Post\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"caseNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"partyType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"SubmissionStatus\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Post\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"initialPdf\",\"kind\":\"object\",\"type\":\"InitialPdf\",\"relationName\":\"InitialPdfToPost\"},{\"name\":\"conversationPdf\",\"kind\":\"object\",\"type\":\"ConversationPdf\",\"relationName\":\"ConversationPdfToPost\"},{\"name\":\"prolongationPdf\",\"kind\":\"object\",\"type\":\"ProlongatedPdf\",\"relationName\":\"PostToProlongatedPdf\"},{\"name\":\"decisionPdf\",\"kind\":\"object\",\"type\":\"DecisionPdf\",\"relationName\":\"DecisionPdfToPost\"},{\"name\":\"initDate\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"caseNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"partyType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"SubmissionStatus\"}],\"dbName\":null},\"InitialPdf\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"postId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"InitialPdfToPost\"}],\"dbName\":null},\"ProlongatedPdf\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"postId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"PostToProlongatedPdf\"}],\"dbName\":null},\"DecisionPdf\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"postId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"DecisionPdfToPost\"}],\"dbName\":null},\"ConversationPdf\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"url\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"postId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"post\",\"kind\":\"object\",\"type\":\"Post\",\"relationName\":\"ConversationPdfToPost\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

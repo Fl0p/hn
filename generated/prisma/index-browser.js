@@ -124,11 +124,44 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.PostScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  initDate: 'initDate',
   caseNumber: 'caseNumber',
   partyType: 'partyType',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   status: 'status'
+};
+
+exports.Prisma.InitialPdfScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  postId: 'postId'
+};
+
+exports.Prisma.ProlongatedPdfScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  postId: 'postId'
+};
+
+exports.Prisma.DecisionPdfScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  postId: 'postId'
+};
+
+exports.Prisma.ConversationPdfScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  postId: 'postId'
 };
 
 exports.Prisma.SortOrder = {
@@ -140,16 +173,25 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
 exports.SubmissionStatus = exports.$Enums.SubmissionStatus = {
-  PENDING: 'PENDING',
-  PROCESSING: 'PROCESSING',
-  COMPLETED: 'COMPLETED',
-  FAILED: 'FAILED',
-  INITIALIZED: 'INITIALIZED'
+  INITIALIZED: 'INITIALIZED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  PROLONGATED: 'PROLONGATED',
+  DECISION_MADE: 'DECISION_MADE',
+  COMPLETED: 'COMPLETED'
 };
 
 exports.Prisma.ModelName = {
-  Post: 'Post'
+  Post: 'Post',
+  InitialPdf: 'InitialPdf',
+  ProlongatedPdf: 'ProlongatedPdf',
+  DecisionPdf: 'DecisionPdf',
+  ConversationPdf: 'ConversationPdf'
 };
 
 /**

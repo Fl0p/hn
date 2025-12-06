@@ -18,7 +18,7 @@ type Props = InferGetStaticPropsType<typeof getServerSideProps>;
 
 const QuestionPage = ({ id }: Props) => {
   const { data: submission } = api.post.getPostById.useQuery({
-    id: Number(id),
+    id,
   });
 
   return (

@@ -52,14 +52,14 @@ export default async function handler(
       },
       body: pdfBuffer,
     });
-
-    const responseText = (await externalRes.json()) as {
-      response: string;
-    };
+    const contentType = externalRes.headers.get("content-type");
+    const body = contentType?.includes("application/json")
+      ? ((await externalRes.json()) as unknown)
+      : await externalRes.text();
 
     return res.status(200).json({
       status: "sent",
-      forwardedResponse: responseText.response ?? "",
+      forwardedResponse: JSON.stringify(body),
     });
   } catch (err) {
     console.error("Upload error:", err);

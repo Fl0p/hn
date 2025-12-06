@@ -125,7 +125,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/sergeinepryahin/Documents/Projects/temp/hacknation/generated/prisma",
+      "value": "/Users/flop/Work/flop/hn/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -134,12 +134,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "darwin",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/sergeinepryahin/Documents/Projects/temp/hacknation/prisma/schema.prisma",
+    "sourceFilePath": "/Users/flop/Work/flop/hn/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

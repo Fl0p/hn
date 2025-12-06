@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
+import { Button } from "~/components/ui/button";
 import { UploadImage } from "~/components/upload-pdf";
 
 import { api } from "~/utils/api";
@@ -7,6 +8,21 @@ import { api } from "~/utils/api";
 export default function Home() {
   const hello = api.post.hello.useQuery({ text: "from tRPC" });
   const [files, setFiles] = useState<File[]>([]);
+
+  async function uploadPdf() {
+    if (!files.length) return;
+  
+    const formData = new FormData();
+    formData.append("file", files.at(0) as File);
+  
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: formData, // ⚠️ DO NOT set Content-Type manually
+    });
+  
+    const data = await res.json();
+    console.log(data);
+  }
 
   return (
     <>
@@ -28,6 +44,7 @@ export default function Home() {
               maxFileNumber={1}
             />
           </div>
+          <Button variant="outline">Create submission</Button>
           <p className="text-2xl text-white">
             {hello.data ? hello.data.greeting : "Loading tRPC query..."}
           </p>

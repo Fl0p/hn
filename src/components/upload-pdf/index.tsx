@@ -75,7 +75,7 @@ export const UploadImage = ({
           className="border-warning border"
         />
         <SpriteHolder className="h-20 w-20" section="upload" name="upload" />
-        <div>Drop file</div>
+        <div>Create submission</div>
         <div className="text-sm italic">
           Allowed formats: PDF, max {maxFileNumber} files
         </div>

@@ -3,22 +3,24 @@ import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { UploadImage } from "~/components/upload-pdf";
 
-import { api } from "~/utils/api";
+// import { api } from "~/utils/api";
 
 export default function Home() {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
+  // const hello = api.post.hello.useQuery({ text: "from tRPC" });
   const [files, setFiles] = useState<File[]>([]);
 
   async function sendPdf(file: File) {
     const formData = new FormData();
     formData.append("file", file);
-  
+
     const res = await fetch("/api/upload", {
       method: "POST",
       body: formData,
     });
-    console.log(res);
-    return res.json();
+
+    const data: unknown = await res.json();
+    console.log(data);
+    return data;
   }
 
   return (
@@ -41,10 +43,16 @@ export default function Home() {
               maxFileNumber={1}
             />
           </div>
-          <Button disabled={!files.length} variant="outline" onClick={() => sendPdf(files[0] as File)}>Create submission</Button>
-          <p className="text-2xl text-white">
+          <Button
+            disabled={!files.length}
+            variant="outline"
+            onClick={() => sendPdf(files[0]!)}
+          >
+            Create submission
+          </Button>
+          {/* <p className="text-2xl text-white">
             {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-          </p>
+          </p> */}
         </div>
       </main>
     </>

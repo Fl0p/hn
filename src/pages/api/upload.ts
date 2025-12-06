@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import formidable, { File } from "formidable";
+import formidable, { type File } from "formidable";
 import fs from "fs";
-import {env} from "~/env";
+import { env } from "~/env";
 
 export const config = {
   api: {
@@ -17,24 +17,28 @@ interface UploadResponse {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<UploadResponse>
+  res: NextApiResponse<UploadResponse>,
 ) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed", status: "error" });
+    return res
+      .status(405)
+      .json({ error: "Method not allowed", status: "error" });
   }
 
   try {
     const file: File | undefined = await new Promise((resolve, reject) => {
       const form = formidable({});
       form.parse(req, (err, _fields, files) => {
-        if (err) reject(err);
+        if (err) reject(err as Error);
         const uploadedFile = files.file;
         resolve(Array.isArray(uploadedFile) ? uploadedFile[0] : uploadedFile);
       });
     });
 
     if (!file) {
-      return res.status(400).json({ error: "No PDF uploaded", status: "error" });
+      return res
+        .status(400)
+        .json({ error: "No PDF uploaded", status: "error" });
     }
 
     // Read the PDF file
@@ -57,6 +61,8 @@ export default async function handler(
     });
   } catch (err) {
     console.error("Upload error:", err);
-    return res.status(500).json({ error: "Internal server error", status: "error" });
+    return res
+      .status(500)
+      .json({ error: "Internal server error", status: "error" });
   }
 }

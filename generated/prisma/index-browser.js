@@ -125,7 +125,8 @@ exports.Prisma.PostScalarFieldEnum = {
   id: 'id',
   name: 'name',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  status: 'status'
 };
 
 exports.Prisma.SortOrder = {
@@ -137,7 +138,13 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
-
+exports.SubmissionStatus = exports.$Enums.SubmissionStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  INITIALIZED: 'INITIALIZED'
+};
 
 exports.Prisma.ModelName = {
   Post: 'Post'

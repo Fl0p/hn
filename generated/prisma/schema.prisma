@@ -12,10 +12,19 @@ datasource db {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
+  id        Int              @id @default(autoincrement())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  status    SubmissionStatus @default(INITIALIZED)
 
   @@index([name])
+}
+
+enum SubmissionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  INITIALIZED
 }

@@ -20,6 +20,26 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 export type Post = $Result.DefaultSelection<Prisma.$PostPayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const SubmissionStatus: {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  INITIALIZED: 'INITIALIZED'
+};
+
+export type SubmissionStatus = (typeof SubmissionStatus)[keyof typeof SubmissionStatus]
+
+}
+
+export type SubmissionStatus = $Enums.SubmissionStatus
+
+export const SubmissionStatus: typeof $Enums.SubmissionStatus
+
+/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -886,6 +906,7 @@ export namespace Prisma {
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: $Enums.SubmissionStatus | null
   }
 
   export type PostMaxAggregateOutputType = {
@@ -893,6 +914,7 @@ export namespace Prisma {
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    status: $Enums.SubmissionStatus | null
   }
 
   export type PostCountAggregateOutputType = {
@@ -900,6 +922,7 @@ export namespace Prisma {
     name: number
     createdAt: number
     updatedAt: number
+    status: number
     _all: number
   }
 
@@ -917,6 +940,7 @@ export namespace Prisma {
     name?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
   }
 
   export type PostMaxAggregateInputType = {
@@ -924,6 +948,7 @@ export namespace Prisma {
     name?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
   }
 
   export type PostCountAggregateInputType = {
@@ -931,6 +956,7 @@ export namespace Prisma {
     name?: true
     createdAt?: true
     updatedAt?: true
+    status?: true
     _all?: true
   }
 
@@ -1025,6 +1051,7 @@ export namespace Prisma {
     name: string
     createdAt: Date
     updatedAt: Date
+    status: $Enums.SubmissionStatus
     _count: PostCountAggregateOutputType | null
     _avg: PostAvgAggregateOutputType | null
     _sum: PostSumAggregateOutputType | null
@@ -1051,6 +1078,7 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
   }, ExtArgs["result"]["post"]>
 
   export type PostSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1058,6 +1086,7 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
   }, ExtArgs["result"]["post"]>
 
   export type PostSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1065,6 +1094,7 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
   }, ExtArgs["result"]["post"]>
 
   export type PostSelectScalar = {
@@ -1072,9 +1102,10 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    status?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt" | "status", ExtArgs["result"]["post"]>
 
   export type $PostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Post"
@@ -1084,6 +1115,7 @@ export namespace Prisma {
       name: string
       createdAt: Date
       updatedAt: Date
+      status: $Enums.SubmissionStatus
     }, ExtArgs["result"]["post"]>
     composites: {}
   }
@@ -1511,6 +1543,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Post", 'String'>
     readonly createdAt: FieldRef<"Post", 'DateTime'>
     readonly updatedAt: FieldRef<"Post", 'DateTime'>
+    readonly status: FieldRef<"Post", 'SubmissionStatus'>
   }
     
 
@@ -1895,7 +1928,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    status: 'status'
   };
 
   export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
@@ -1965,6 +1999,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'SubmissionStatus'
+   */
+  export type EnumSubmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubmissionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SubmissionStatus[]'
+   */
+  export type ListEnumSubmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SubmissionStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1989,6 +2037,7 @@ export namespace Prisma {
     name?: StringFilter<"Post"> | string
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
+    status?: EnumSubmissionStatusFilter<"Post"> | $Enums.SubmissionStatus
   }
 
   export type PostOrderByWithRelationInput = {
@@ -1996,6 +2045,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type PostWhereUniqueInput = Prisma.AtLeast<{
@@ -2006,6 +2056,7 @@ export namespace Prisma {
     name?: StringFilter<"Post"> | string
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
+    status?: EnumSubmissionStatusFilter<"Post"> | $Enums.SubmissionStatus
   }, "id">
 
   export type PostOrderByWithAggregationInput = {
@@ -2013,6 +2064,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
     _count?: PostCountOrderByAggregateInput
     _avg?: PostAvgOrderByAggregateInput
     _max?: PostMaxOrderByAggregateInput
@@ -2028,12 +2080,14 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Post"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
+    status?: EnumSubmissionStatusWithAggregatesFilter<"Post"> | $Enums.SubmissionStatus
   }
 
   export type PostCreateInput = {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: $Enums.SubmissionStatus
   }
 
   export type PostUncheckedCreateInput = {
@@ -2041,12 +2095,14 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: $Enums.SubmissionStatus
   }
 
   export type PostUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
   }
 
   export type PostUncheckedUpdateInput = {
@@ -2054,6 +2110,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
   }
 
   export type PostCreateManyInput = {
@@ -2061,12 +2118,14 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    status?: $Enums.SubmissionStatus
   }
 
   export type PostUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
   }
 
   export type PostUncheckedUpdateManyInput = {
@@ -2074,6 +2133,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumSubmissionStatusFieldUpdateOperationsInput | $Enums.SubmissionStatus
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -2113,11 +2173,19 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type EnumSubmissionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SubmissionStatus | EnumSubmissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSubmissionStatusFilter<$PrismaModel> | $Enums.SubmissionStatus
+  }
+
   export type PostCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type PostAvgOrderByAggregateInput = {
@@ -2129,6 +2197,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type PostMinOrderByAggregateInput = {
@@ -2136,6 +2205,7 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type PostSumOrderByAggregateInput = {
@@ -2190,12 +2260,26 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type EnumSubmissionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SubmissionStatus | EnumSubmissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSubmissionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SubmissionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSubmissionStatusFilter<$PrismaModel>
+    _max?: NestedEnumSubmissionStatusFilter<$PrismaModel>
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type EnumSubmissionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.SubmissionStatus
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -2240,6 +2324,13 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedEnumSubmissionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SubmissionStatus | EnumSubmissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSubmissionStatusFilter<$PrismaModel> | $Enums.SubmissionStatus
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -2298,6 +2389,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSubmissionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SubmissionStatus | EnumSubmissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SubmissionStatus[] | ListEnumSubmissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSubmissionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SubmissionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSubmissionStatusFilter<$PrismaModel>
+    _max?: NestedEnumSubmissionStatusFilter<$PrismaModel>
   }
 
 

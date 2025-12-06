@@ -1,12 +1,29 @@
 import Head from "next/head";
+import { BadgeCheckIcon, ChevronRightIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
+import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "~/components/ui/item";
 import { UploadImage } from "~/components/upload-pdf";
 
-// import { api } from "~/utils/api";
+import { api } from "~/utils/api";
+import Link from "next/link";
 
 export default function Home() {
-  // const hello = api.post.hello.useQuery({ text: "from tRPC" });
+  const queryClient = api.useUtils();
+  const { data: submissions } = api.post.getAll.useQuery();
+  const { mutate, isPending: isCreating } = api.post.create.useMutation({
+    onSuccess: async () => {
+      void (await queryClient.post.getAll.invalidate());
+      setFiles([]);
+    },
+  });
   const [files, setFiles] = useState<File[]>([]);
 
   async function sendPdf(file: File) {
@@ -20,6 +37,7 @@ export default function Home() {
 
     const data: unknown = await res.json();
     console.log(data);
+    mutate({ name: file.name + Date.now().toString() });
     return data;
   }
 
@@ -44,15 +62,40 @@ export default function Home() {
             />
           </div>
           <Button
-            disabled={!files.length}
+            disabled={!files.length || isCreating}
             variant="outline"
             onClick={() => sendPdf(files[0]!)}
           >
-            Create submission
+            {isCreating ? "Creating submission..." : "Create submission"}
           </Button>
-          {/* <p className="text-2xl text-white">
-            {hello.data ? hello.data.greeting : "Loading tRPC query..."}
-          </p> */}
+          <p className="text-2xl text-white">
+            {submissions?.length
+              ? submissions.map((submission) => (
+                  <Item
+                    variant="outline"
+                    size="sm"
+                    asChild
+                    key={submission.id}
+                    className="m-5"
+                  >
+                    <Link href={`/submissions/${submission.id}`}>
+                      <ItemMedia>
+                        <BadgeCheckIcon className="size-5" />
+                      </ItemMedia>
+                      <ItemContent className="flex flex-row gap-2">
+                        <ItemTitle>{submission.name}</ItemTitle>
+                        <ItemDescription>
+                          Status: {submission.status}
+                        </ItemDescription>
+                      </ItemContent>
+                      <ItemActions>
+                        <ChevronRightIcon className="size-4" />
+                      </ItemActions>
+                    </Link>
+                  </Item>
+                ))
+              : "Nothing had been submitted yet."}
+          </p>
         </div>
       </main>
     </>

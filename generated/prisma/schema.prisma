@@ -56,7 +56,7 @@ model ProlongatedPdf {
   url       String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  postId    String   @unique
+  postId    String
   post      Post     @relation(fields: [postId], references: [id])
 
   @@index([url])
@@ -68,7 +68,7 @@ model DecisionPdf {
   url       String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  postId    String   @unique
+  postId    String
   post      Post     @relation(fields: [postId], references: [id])
 
   @@index([url])
@@ -80,7 +80,7 @@ model ConversationPdf {
   url       String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  postId    String   @unique
+  postId    String
   post      Post     @relation(fields: [postId], references: [id])
 
   @@index([url])

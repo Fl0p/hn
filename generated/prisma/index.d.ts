@@ -7031,14 +7031,14 @@ export namespace Prisma {
   export type ProlongatedPdfWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     url?: string
-    postId?: string
     AND?: ProlongatedPdfWhereInput | ProlongatedPdfWhereInput[]
     OR?: ProlongatedPdfWhereInput[]
     NOT?: ProlongatedPdfWhereInput | ProlongatedPdfWhereInput[]
     createdAt?: DateTimeFilter<"ProlongatedPdf"> | Date | string
     updatedAt?: DateTimeFilter<"ProlongatedPdf"> | Date | string
+    postId?: StringFilter<"ProlongatedPdf"> | string
     post?: XOR<PostScalarRelationFilter, PostWhereInput>
-  }, "id" | "url" | "postId">
+  }, "id" | "url">
 
   export type ProlongatedPdfOrderByWithAggregationInput = {
     id?: SortOrder
@@ -7086,14 +7086,14 @@ export namespace Prisma {
   export type DecisionPdfWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     url?: string
-    postId?: string
     AND?: DecisionPdfWhereInput | DecisionPdfWhereInput[]
     OR?: DecisionPdfWhereInput[]
     NOT?: DecisionPdfWhereInput | DecisionPdfWhereInput[]
     createdAt?: DateTimeFilter<"DecisionPdf"> | Date | string
     updatedAt?: DateTimeFilter<"DecisionPdf"> | Date | string
+    postId?: StringFilter<"DecisionPdf"> | string
     post?: XOR<PostScalarRelationFilter, PostWhereInput>
-  }, "id" | "url" | "postId">
+  }, "id" | "url">
 
   export type DecisionPdfOrderByWithAggregationInput = {
     id?: SortOrder
@@ -7141,14 +7141,14 @@ export namespace Prisma {
   export type ConversationPdfWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     url?: string
-    postId?: string
     AND?: ConversationPdfWhereInput | ConversationPdfWhereInput[]
     OR?: ConversationPdfWhereInput[]
     NOT?: ConversationPdfWhereInput | ConversationPdfWhereInput[]
     createdAt?: DateTimeFilter<"ConversationPdf"> | Date | string
     updatedAt?: DateTimeFilter<"ConversationPdf"> | Date | string
+    postId?: StringFilter<"ConversationPdf"> | string
     post?: XOR<PostScalarRelationFilter, PostWhereInput>
-  }, "id" | "url" | "postId">
+  }, "id" | "url">
 
   export type ConversationPdfOrderByWithAggregationInput = {
     id?: SortOrder

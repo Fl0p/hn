@@ -1,3 +1,4 @@
+import { SubmissionStatus } from "generated/prisma";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
@@ -41,6 +42,27 @@ export const postRouter = createTRPCRouter({
               url: input.initialPdfUrl,
             },
           },
+        },
+      });
+    }),
+  prolongate: publicProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+        prolongatedPdfUrl: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.prolongatedPdf.create({
+        data: {
+          url: input.prolongatedPdfUrl,
+          postId: input.id,
+        },
+      });
+      await ctx.db.post.update({
+        where: { id: input.id },
+        data: {
+          status: SubmissionStatus.PROLONGATED,
         },
       });
     }),

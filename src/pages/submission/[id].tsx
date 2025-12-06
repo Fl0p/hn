@@ -4,6 +4,19 @@ import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import { prefetchHelper } from "~/utils/prefetchHelper";
 
+const formatDate = (date?: Date | null) => {
+  if (!date) return "—";
+  try {
+    return date.toLocaleDateString("pl-PL", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  } catch {
+    return "—";
+  }
+};
+
 export const getServerSideProps = async (context: GetStaticPropsContext) => {
   const id = context.params?.id;
   if (typeof id !== "string") return { notFound: true };
@@ -20,21 +33,22 @@ export const getServerSideProps = async (context: GetStaticPropsContext) => {
 type Props = InferGetStaticPropsType<typeof getServerSideProps>;
 
 const QuestionPage = ({ id }: Props) => {
-  const { data: submission } = api.post.getPostById.useQuery({
-    id,
-  });
+  const queryClient = api.useUtils();
+  const { data: submission } = api.post.getPostById.useQuery({ id });
+  const { mutate, isPending: isProlongating } = api.post.prolongate.useMutation(
+    {
+      onSuccess: async () => {
+        void (await queryClient.post.getAll.invalidate());
+        void (await queryClient.post.getPostById.invalidate({ id }));
+      },
+    },
+  );
 
-  const formatDate = (date?: Date | null) => {
-    if (!date) return "—";
-    try {
-      return date.toLocaleDateString("pl-PL", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      });
-    } catch {
-      return "—";
-    }
+  const handleProlongate = () => {
+    const performProlongation = {
+      prolongatedPdfUrl: "prolongation.pdf" + Date.now().toString(),
+    };
+    mutate({ id, prolongatedPdfUrl: performProlongation.prolongatedPdfUrl });
   };
 
   const documentSections: {
@@ -63,7 +77,6 @@ const QuestionPage = ({ id }: Props) => {
       documents: submission?.decisionPdf ?? [],
     },
   ];
-  console.log("🚀 ~ QuestionPage ~ documentSections:", documentSections);
 
   return (
     <div className="m-10 space-y-8">
@@ -71,7 +84,13 @@ const QuestionPage = ({ id }: Props) => {
         <Button variant="link" asChild>
           <Link href="/">Powrót</Link>
         </Button>
-        <Button variant="outline">Przedłuż</Button>
+        <Button
+          variant="outline"
+          onClick={handleProlongate}
+          disabled={isProlongating}
+        >
+          {isProlongating ? "Przedłużanie..." : "Przedłuż"}
+        </Button>
       </div>
 
       <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">

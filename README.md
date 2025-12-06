@@ -1,94 +1,29 @@
-# Hello World - Next.js + TypeScript + Prisma + PostgreSQL
+# Create T3 App
 
-Simple monorepo project with Next.js, React, TypeScript, Prisma, and PostgreSQL.
+This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
-## Stack
+## What's next? How do I make an app with this?
 
-- **Frontend**: Next.js 14 + React + TypeScript
-- **Backend**: Next.js API Routes
-- **Database**: PostgreSQL (Docker)
-- **ORM**: Prisma
-- **Package Manager**: Yarn
+We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
 
-## Getting Started
+If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
-### 1. Install dependencies
+- [Next.js](https://nextjs.org)
+- [NextAuth.js](https://next-auth.js.org)
+- [Prisma](https://prisma.io)
+- [Drizzle](https://orm.drizzle.team)
+- [Tailwind CSS](https://tailwindcss.com)
+- [tRPC](https://trpc.io)
 
-```bash
-yarn install
-```
+## Learn More
 
-### 2. Start PostgreSQL in Docker
+To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
 
-```bash
-yarn db:up
-```
+- [Documentation](https://create.t3.gg/)
+- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
 
-### 3. Run database migrations
+You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
 
-```bash
-yarn db:migrate
-```
+## How do I deploy this?
 
-### 4. Start development server
-
-```bash
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## Available Scripts
-
-- `yarn dev` - Start development server
-- `yarn build` - Build for production
-- `yarn start` - Start production server
-- `yarn db:up` - Start PostgreSQL container
-- `yarn db:down` - Stop PostgreSQL container
-- `yarn db:migrate` - Run Prisma migrations
-- `yarn db:studio` - Open Prisma Studio (database GUI)
-- `yarn db:generate` - Generate Prisma Client
-
-## API Endpoints
-
-### GET /api/users
-Get all users
-
-### POST /api/users
-Create a new user
-
-Request body:
-```json
-{
-  "email": "user@example.com",
-  "name": "John Doe"
-}
-```
-
-## Database
-
-PostgreSQL runs in Docker on `localhost:5432`
-
-- **Database**: hn_dev
-- **User**: postgres
-- **Password**: postgres
-
-## Project Structure
-
-```
-.
-├── app/
-│   ├── api/
-│   │   └── users/
-│   │       └── route.ts      # API routes
-│   ├── layout.tsx            # Root layout
-│   ├── page.tsx              # Home page
-│   └── globals.css           # Global styles
-├── lib/
-│   └── prisma.ts             # Prisma client
-├── prisma/
-│   └── schema.prisma         # Database schema
-├── docker-compose.yml        # PostgreSQL container
-└── package.json
-```
-
+Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.

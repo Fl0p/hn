@@ -1,7 +1,3 @@
-<svg width="0" height="0" class="hidden">
-  <symbol xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" id="upload">
-    <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path>
-    <path d="M12 12v9"></path>
-    <path d="m16 16-4-4-4 4"></path>
-  </symbol>
-</svg>
+version https://git-lfs.github.com/spec/v1
+oid sha256:b9c4ee0ea7c79a6717f891088dff157aa355cb07b3100e17705e2d93658d815e
+size 383

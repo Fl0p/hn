@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import formidable, { type File } from "formidable";
 import fs from "fs";
-import { env } from "~/env";
 
 export const config = {
   api: {
@@ -45,17 +44,24 @@ export default async function handler(
     const pdfBuffer = fs.readFileSync(file.filepath);
 
     // Send it to external API
-    const externalRes = await fetch(env.DIFY_API_URL, {
+    const externalRes = await fetch("https://dify.aimost.pl/api/files/upload", {
       method: "POST",
       headers: {
-        "Content-Type": "application/pdf",
+        "x-app-code": "L78aZH4xcFgNBJqE",
+        "x-app-passport":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI0MDYwMDFiNy1iOTUzLTRlY2YtYjYzNC1iYzcwZjNhN2IyZmQiLCJzdWIiOiJXZWIgQVBJIFBhc3Nwb3J0IiwiYXBwX2lkIjoiNDA2MDAxYjctYjk1My00ZWNmLWI2MzQtYmM3MGYzYTdiMmZkIiwiYXBwX2NvZGUiOiJMNzhhWkg0eGNGZ05CSnFFIiwiZW5kX3VzZXJfaWQiOiIzNTVmZGQ5Yy04ODBiLTQwNWItYmU1Ny1kYWIyOWY3YjcwZjAifQ.t0aBlG6CN6s4xQj37edyFEcH0heVI1FfYDASggw51z0",
+        "x-csrf-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjUwNjQ0ODIsInN1YiI6Ijc1ODFhN2FhLTNiYzgtNDAxMS1iNGU5LTJjNDY4MDA5ZmY0NSJ9.WwYGUR4f7oMJ0DYLNGQhs0dqEOvrblcRFvz4RE4ylZM",
       },
+      credentials: "include", // needed because curl used cookies
       body: pdfBuffer,
     });
+
     const contentType = externalRes.headers.get("content-type");
     const body = contentType?.includes("application/json")
       ? ((await externalRes.json()) as unknown)
       : await externalRes.text();
+    console.log("🚀 ~ handler ~ body:", body);
 
     return res.status(200).json({
       status: "sent",

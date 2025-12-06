@@ -83,7 +83,7 @@ export const postRouter = createTRPCRouter({
       await ctx.db.post.update({
         where: { id: input.id },
         data: {
-          status: SubmissionStatus.PROLONGATED,
+          status: SubmissionStatus.DECISION_MADE,
         },
       });
     }),

@@ -1,105 +1,34 @@
-# Dependencies
-node_modules/
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-# Build outputs
-dist/
-build/
-*.tsbuildinfo
-*.js.map
-*.d.ts.map
-
-# Environment variables
+# local env files
+.env*.local
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# vercel
+.vercel
 
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-Icon
-._*
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
-# Testing
-coverage/
-.nyc_output/
-*.lcov
-
-# Logs
-logs/
-*.log
-
-# Runtime data
-pids/
-*.pid
-*.seed
-*.pid.lock
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# parcel-bundler cache
-.cache
-.parcel-cache
-
-# Next.js
-.next/
-out/
-
-# Nuxt.js
-.nuxt/
-.output/
-
-# Vite
-.vite/
-
-# TypeScript
+# typescript
 *.tsbuildinfo
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-
-# Samples
-samples/
-
-
+next-env.d.ts

@@ -8,6 +8,12 @@ export const postRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const post = await ctx.db.post.findUnique({
         where: { id: input.id },
+        include: {
+          initialPdf: true,
+          conversationPdf: true,
+          prolongationPdf: true,
+          decisionPdf: true,
+        },
       });
 
       return post ?? null;

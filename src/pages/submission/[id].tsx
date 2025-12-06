@@ -26,10 +26,29 @@ const QuestionPage = ({ id }: Props) => {
       <Button variant="link" asChild>
         <Link href="/">Back</Link>
       </Button>
-      <h1>{submission?.name}</h1>
-      <p>{submission?.status}</p>
-      <p>{submission?.createdAt.toLocaleDateString()}</p>
-      <p>{submission?.updatedAt.toLocaleDateString()}</p>
+      <h1>Name: {submission?.name}</h1>
+      <p>Status: {submission?.status}</p>
+      <p>Added to app:{submission?.createdAt.toLocaleDateString()}</p>
+      <p>Last updated: {submission?.updatedAt.toLocaleDateString()}</p>
+      <p>Initial PDF url: {submission?.initialPdf?.url}</p>
+      <div>
+        Conversation PDF urls:{" "}
+        {submission?.conversationPdf?.map((pdf) => (
+          <p key={pdf.id}>{pdf.url}</p>
+        ))}
+      </div>
+      <div>
+        Prolongation PDF urls:{" "}
+        {submission?.prolongationPdf?.map((pdf) => (
+          <p key={pdf.id}>{pdf.url}</p>
+        ))}
+      </div>
+      <div>
+        Decision PDF urls:{" "}
+        {submission?.decisionPdf?.map((pdf) => (
+          <p key={pdf.id}>{pdf.url}</p>
+        ))}
+      </div>
     </div>
   );
 };

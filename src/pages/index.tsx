@@ -50,9 +50,20 @@ export default function Home() {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            <span className="text-[hsl(280,100%,70%)]">HACKNATION</span>
-          </h1>
+          <div className="w-full max-w-2xl">
+            <label
+              htmlFor="case-search"
+              className="mb-2 block text-xl font-semibold text-white"
+            >
+              Wyszukiwanie sprawy
+            </label>
+            <input
+              id="case-search"
+              type="text"
+              placeholder="Wprowadź numer sprawy lub słowa kluczowe..."
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+          </div>
           <div className="flex w-full justify-center">
             <UploadImage
               title={"Upload PDF"}

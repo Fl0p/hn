@@ -1,0 +1,21 @@
+Demonstracja działania systemu DecyZen
+
+System DecyZen zapewnia narzędzia do wyszukiwania, monitorowania oraz otrzymywania powiadomień dotyczących spraw znajdujących się w postępowaniu administracyjnym.
+
+Po wybraniu sprawy użytkownik może zapoznać się z całą aktualną informacją na jej temat.
+Sprawy z nadchodzącymi terminami wyświetlane są na początku listy i oznaczane kolorem czerwonym.
+
+Interfejs umożliwia łatwe utworzenie nowej sprawy — wystarczy przesłać plik odwołania.
+Po wgraniu dokument zostaje zapisany w bazie, a system automatycznie dokonuje analizy i wyodrębnia kluczowe dane.
+
+DecyZen monitoruje terminy procesowe i wysyła powiadomienia w przypadku ich upływu.
+Wbudowany moduł analizy AI pozwala również na uzyskanie wstępnej oceny sprawy.
+Jeżeli dostępna jest odpowiednia ilość informacji, system może zaproponować przygotowanie projektu decyzji na podstawie właściwych szablonów.
+Wygenerowany plik pojawia się w sekcji materiałów sprawy i jest dostępny do pobrania.
+
+Każdą sprawę z upływającym terminem można przedłużyć jednym przyciskiem.
+W takim przypadku system automatycznie utworzy odpowiednie postanowienie o przedłużeniu terminu — zgodnie z wybranym szablonem, z uzupełnieniem wszystkich wymaganych danych oraz odwołaniami do właściwych przepisów proceduralnych.
+Po wysłaniu dokumentu termin oraz status sprawy są automatycznie aktualizowane w bazie, a historia przedłużeń pozostaje zapisana w materiałach i jest dostępna do pobrania.
+
+W obecnej demonstracji mogą Państwo zobaczyć przykładowe dokumenty wygenerowane przez system.
+Mechanizm AI samodzielnie dobiera właściwy szablon i uzupełnia go danymi ze sprawy, korzystając jednocześnie z aktualnych podstaw prawnych pozyskiwanych z zewnętrznych źródeł.

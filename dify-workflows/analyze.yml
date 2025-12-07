@@ -1,0 +1,320 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: json doc info
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/bedrock:0.0.51@a3e2b010edc18d99010c7caf437d073a0ec3fa663147a71c7e43fd0c2f842ee2
+    version: null
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: document-extractor
+      id: 1765043866164-source-1765063689704-target
+      selected: false
+      source: '1765043866164'
+      sourceHandle: source
+      target: '1765063689704'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: document-extractor
+        targetType: llm
+      id: 1765063689704-source-1765063710587-target
+      selected: false
+      source: '1765063689704'
+      sourceHandle: source
+      target: '1765063710587'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1765063710587-source-1765063801436-target
+      selected: false
+      source: '1765063710587'
+      sourceHandle: source
+      target: '1765063801436'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          default: ''
+          hint: ''
+          label: odwolanie
+          max_length: 48
+          options: []
+          placeholder: ''
+          required: true
+          type: file
+          variable: odwolanie
+      height: 88
+      id: '1765043866164'
+      position:
+        x: 0
+        y: 2
+      positionAbsolute:
+        x: 0
+        y: 2
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_array_file: false
+        selected: false
+        title: Doc Extractor
+        type: document-extractor
+        variable_selector:
+        - '1765043866164'
+        - odwolanie
+      height: 92
+      id: '1765063689704'
+      position:
+        x: 376.28571428571433
+        y: -5.142857142857153
+      positionAbsolute:
+        x: 376.28571428571433
+        y: -5.142857142857153
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1765063689704'
+          - text
+        model:
+          completion_params:
+            model_name: Claude 4.5 Sonnet
+            temperature: 0.7
+          mode: chat
+          name: anthropic claude
+          provider: langgenius/bedrock/bedrock
+        prompt_template:
+        - id: 2e2361b3-a5fc-4d44-89b3-d7734833579a
+          role: system
+          text: 'Analyze the provided text document. Your task is to extract all relevant
+            details strictly according to the defined output JSON Schema. For each
+            field: 1. Identify the **Full Organizational Name** and its **Contact
+            Information** (Address, Email, Website). 2. Locate the **City** and **Date**
+            the document was issued. 3. Extract any **Legally Significant Year** or
+            the **Title/Position** of the signing authority. 4. Find the details of
+            the **Party** involved (Name, Address) and the **Case Information** (Number,
+            Type, Subject). 5. Determine any **New Deadline** or **Access Information**
+            (Address, Hours, Phone) mentioned. 6. Identify the **Justification/Reason**
+            for the main action (e.g., deadline extension). 7. Note the **Ministerial/Controlling
+            Organization** and the **Signatory''s Full Name and Title**. If information
+            for a field is not present in the document, return an empty string ("")
+            for that field in the JSON structure. --- {{#context#}}'
+        - role: user
+          text: return json schema
+        selected: false
+        structured_output:
+          schema:
+            $id: http://example.com/legal_document_metadata.schema.json
+            $schema: http://json-schema.org/draft-07/schema#
+            description: Schema for extracting key information from a legal or official
+              document.
+            properties:
+              access_address:
+                description: Адрес для ознакомления/доступа к материалам
+                type: string
+              access_hours:
+                description: Часы работы или часы доступа для ознакомления
+                type: string
+              access_phone:
+                description: Контактный телефон для справок/доступа
+                type: string
+              case_number:
+                description: Номер дела или регистрационный номер документа (например,
+                  А40-12345/2023)
+                type: string
+              case_subject:
+                description: Краткое содержание или предмет дела/обращения
+                type: string
+              case_type:
+                description: Тип дела (Административное, Гражданское, Арбитражное
+                  и т.п.)
+                type: string
+              city:
+                description: Город, где составлен документ или где расположена организация
+                type: string
+              date:
+                description: 'Дата составления документа (рекомендуемый формат: ГГГГ-ММ-ДД)'
+                format: date
+                type: string
+              justification_reason:
+                description: Причина, основание или мотивировка, упомянутая в документе
+                type: string
+              legal_position:
+                description: Юридическая должность или звание подписавшего лица
+                type: string
+              legal_year:
+                description: Год, который упоминается в документе как юридически значимый
+                type: string
+              minister_org_name:
+                description: Наименование вышестоящего или контролирующего органа/министерства
+                  (если упоминается)
+                type: string
+              new_deadline:
+                description: 'Новый или запрашиваемый срок/дедлайн (рекомендуемый
+                  формат: ГГГГ-ММ-ДД)'
+                format: date
+                type: string
+              org_address:
+                description: Адрес организации-отправителя/учреждения
+                type: string
+              org_email:
+                description: Электронная почта организации-отправителя/учреждения
+                format: email
+                type: string
+              org_full_name:
+                description: Полное наименование организации-отправителя/учреждения
+                  (суда, министерства и т.п.)
+                type: string
+              org_website:
+                description: Веб-сайт организации-отправителя/учреждения
+                format: uri
+                type: string
+              party_address:
+                description: Адрес стороны, к которой относится дело/документ
+                type: string
+              party_name:
+                description: Наименование или ФИО стороны, к которой относится дело/документ
+                  (Истец, Ответчик, Заявитель)
+                type: string
+              signatory_name:
+                description: ФИО лица, подписавшего документ
+                type: string
+              signatory_title:
+                description: Должность лица, подписавшего документ (если отличается
+                  от legal_position)
+                type: string
+            required:
+            - org_full_name
+            - city
+            - date
+            title: Legal Document Metadata
+            type: object
+        structured_output_enabled: true
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1765063710587'
+      position:
+        x: 722.5714285714284
+        y: -108
+      positionAbsolute:
+        x: 722.5714285714284
+        y: -108
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1765063710587'
+          - structured_output
+          value_type: object
+          variable: data
+        selected: false
+        title: End
+        type: end
+      height: 88
+      id: '1765063801436'
+      position:
+        x: 1026
+        y: 2
+      positionAbsolute:
+        x: 1026
+        y: 2
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 341.39412274035004
+      y: 236.91714572301316
+      zoom: 0.5101329584318304
+  rag_pipeline_variables: []

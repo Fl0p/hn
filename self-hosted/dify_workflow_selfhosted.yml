@@ -1,0 +1,239 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: przedluzenie
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/ollama:0.1.0@7c18c74b94a855de83aa66f376939d47b96a49b6dbb6904b46b267cb0213396e
+    version: null
+kind: app
+version: 0.5.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: http-request
+      id: 1765067577962-source-1765069099529-target
+      source: '1765067577962'
+      sourceHandle: source
+      target: '1765069099529'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: llm
+      id: 1765069099529-source-1765071781909-target
+      source: '1765069099529'
+      sourceHandle: source
+      target: '1765071781909'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: User Input
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          default: ''
+          hint: ''
+          label: input_pdf
+          max_length: 48
+          options: []
+          placeholder: ''
+          required: true
+          type: file
+          variable: input_pdf
+      height: 109
+      id: '1765067577962'
+      position:
+        x: 113.33174457422882
+        y: 361.85796063540164
+      positionAbsolute:
+        x: 113.33174457422882
+        y: 361.85796063540164
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - file:
+            - '1765067577962'
+            - input_pdf
+            id: key-value-265
+            key: file
+            type: file
+            value: ''
+          - id: key-value-296
+            key: ''
+            type: text
+            value: ''
+          type: form-data
+        headers: ''
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: true
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: OCR PDF2TEXT
+        type: http-request
+        url: http://host.docker.internal:5000/run
+        variables: []
+      height: 137
+      id: '1765069099529'
+      position:
+        x: 420.290755203712
+        y: 361.8579606354015
+      positionAbsolute:
+        x: 420.290755203712
+        y: 361.8579606354015
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1765069099529'
+          - body
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: llama3.2
+          provider: langgenius/ollama/ollama
+        prompt_template:
+        - id: e5258f09-f5b0-49f6-8abd-e201b1cdaf28
+          role: system
+          text: "Generate summary, maximum 16 words \n{{#context#}}"
+        selected: false
+        title: LLM METADATA EXTRACT
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1765071781909'
+      position:
+        x: 725.4442327122939
+        y: 366.24308935868
+      positionAbsolute:
+        x: 725.4442327122939
+        y: 366.24308935868
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: llama3.2
+          provider: langgenius/ollama/ollama
+        prompt_template:
+        - role: system
+          text: ''
+        selected: false
+        title: LLM CLASSIFICATION
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1765076824819'
+      position:
+        x: 1027.4442327122938
+        y: 366.24308935868
+      positionAbsolute:
+        x: 1027.4442327122938
+        y: 366.24308935868
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -283.7043427701162
+      y: -158.21304162034392
+      zoom: 0.9121739069519473
+  rag_pipeline_variables: []

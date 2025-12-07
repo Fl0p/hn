@@ -235,6 +235,8 @@ The system is designed to integrate with [Dify](https://dify.ai/) for AI orchest
 - **Similar Case Search**: Semantic search across historical decisions
 - **Risk Assessment**: Automated compliance and risk scoring
 
+Dify Workflow DSLs are located in dify-workflows/*.yml
+
 For detailed architecture, see [docs/architecture.md](./docs/architecture.md).
 
 ## Code Conventions
@@ -291,6 +293,7 @@ See the [T3 Stack deployment guides](https://create.t3.gg/en/deployment/vercel) 
 
 ## Security
 
+- **Fully self-hosted ability**: tech details in /self-hosted/README.md 
 - **Input validation**: Zod schemas on all API inputs
 - **File upload restrictions**: Max 40MB, PDF files only
 - **Environment variables**: Validated using @t3-oss/env-nextjs

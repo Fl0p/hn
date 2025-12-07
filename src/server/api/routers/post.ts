@@ -194,7 +194,7 @@ export const postRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const response = await fetch(
-        "https://dify.aimost.pl/v1/workflows/bc67dbde-30ed-412b-bc3a-f6ac47873560/run",
+        "https://dify.aimost.pl/v1/workflows/b83b5592-2966-4f70-8701-c823d24eaf91/run",
         {
           method: "POST",
           headers: {

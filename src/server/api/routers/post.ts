@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { SubmissionStatus } from "generated/prisma";
 import { z } from "zod";
 
@@ -24,9 +25,6 @@ export const postRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string().min(1),
-        initDate: z.string().min(1),
-        caseNumber: z.string().min(1),
-        partyType: z.string().min(1),
         initialPdfUrl: z.string().min(1),
       }),
     )
@@ -34,9 +32,6 @@ export const postRouter = createTRPCRouter({
       return ctx.db.post.create({
         data: {
           name: input.name,
-          initDate: input.initDate,
-          caseNumber: input.caseNumber,
-          partyType: input.partyType,
           initialPdf: {
             create: {
               url: input.initialPdfUrl,
@@ -45,17 +40,134 @@ export const postRouter = createTRPCRouter({
         },
       });
     }),
+  analyze: publicProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+        name: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const response = await fetch(
+        "https://dify.aimost.pl/v1/workflows/084fbfe1-3e34-48e1-a2cb-363f3759fbde/run",
+        {
+          method: "POST",
+          headers: {
+            accept: "*/*",
+            "accept-language": "en-US,en;q=0.9,ru;q=0.8",
+            "content-type": "application/json",
+            origin: "https://dify.aimost.pl",
+            priority: "u=1, i",
+            referer: "https://dify.aimost.pl/workflow/v2TZZ8UyE4woHJDi",
+            "sec-ch-ua": `"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"`,
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": '"macOS"',
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-origin",
+            "user-agent":
+              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "x-app-code": "v2TZZ8UyE4woHJDi",
+            "x-app-passport":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI1YjFjOTdiYy1jMmZhLTQ1NWQtOWM5OS1mMmM2NThmOGI0ZTAiLCJzdWIiOiJXZWIgQVBJIFBhc3Nwb3J0IiwiYXBwX2lkIjoiNWIxYzk3YmMtYzJmYS00NTVkLTljOTktZjJjNjU4ZjhiNGUwIiwiYXBwX2NvZGUiOiJ2MlRaWjhVeUU0d29ISkRpIiwiZW5kX3VzZXJfaWQiOiJkNWJjMDZkZC0zY2JkLTRjNTEtOTU2MS1iZjcyYWI0YzNmZjgifQ.6_0gNA_V5-1sJ_vcjTEgxWAvB146lU7uPM4jyrCfP2Q",
+            "x-csrf-token":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjUwNjQ0ODIsInN1YiI6Ijc1ODFhN2FhLTNiYzgtNDAxMS1iNGU5LTJjNDY4MDA5ZmY0NSJ9.WwYGUR4f7oMJ0DYLNGQhs0dqEOvrblcRFvz4RE4ylZM",
+            Authorization: "Bearer app-0X9jogpIR5hMetR8LGtpXQ2k",
+          },
+          body: JSON.stringify({
+            inputs: {
+              odwolanie: {
+                type: "document",
+                transfer_method: "local_file",
+                url: "",
+                upload_file_id: input.name,
+              },
+            },
+            response_mode: "blocking",
+            user: "user9@aimost.pl",
+          }),
+        },
+      );
+      const body = (await response.json()) as unknown as {
+        task_id: string;
+        workflow_run_id: string;
+        data: {
+          id: string;
+          outputs: {
+            data: {
+              case_number: string;
+              new_deadline: string;
+              date: string;
+              party_name: string;
+            };
+          };
+        };
+      };
+
+      await ctx.db.post.update({
+        where: { id: input.id },
+        data: {
+          status: SubmissionStatus.ANALYZED,
+          caseNumber: body.data.outputs.data.case_number,
+          initDate:
+            body.data.outputs.data.new_deadline || body.data.outputs.data.date,
+          partyType: body.data.outputs.data.party_name,
+        },
+      });
+    }),
+
   prolongate: publicProcedure
     .input(
       z.object({
         id: z.string().min(1),
-        prolongatedPdfUrl: z.string().min(1),
+        name: z.string().min(1),
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const response = await fetch(
+        "https://dify.aimost.pl/v1/workflows/9fe8bd15-5958-4b46-b300-723069f0748d/run",
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer app-JVtvQFDvY3m9lDxuV7CEKUSn",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            inputs: {
+              odwolanie: {
+                type: "document",
+                transfer_method: "local_file",
+                url: "",
+                upload_file_id: input.name,
+              },
+            },
+            response_mode: "blocking",
+            user: "user9@aimost.pl",
+          }),
+        },
+      );
+      const body = (await response.json()) as unknown as {
+        task_id: string;
+        workflow_run_id: string;
+        data: {
+          id: string;
+          outputs: {
+            files: Array<{ url: string }>;
+          };
+        };
+      };
+
+      const prolongatedPdfUrl = body.data.outputs.files
+        .at(0)
+        ?.url.replace("http://api:5001/", "https://dify.aimost.pl/");
+      if (!prolongatedPdfUrl)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Prolongated PDF URL not found",
+        });
       await ctx.db.prolongatedPdf.create({
         data: {
-          url: input.prolongatedPdfUrl,
+          url: prolongatedPdfUrl,
           postId: input.id,
         },
       });

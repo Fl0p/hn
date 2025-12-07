@@ -180,6 +180,7 @@ exports.Prisma.NullsOrder = {
 };
 exports.SubmissionStatus = exports.$Enums.SubmissionStatus = {
   INITIALIZED: 'INITIALIZED',
+  ANALYZED: 'ANALYZED',
   IN_PROGRESS: 'IN_PROGRESS',
   PROLONGATED: 'PROLONGATED',
   DECISION_MADE: 'DECISION_MADE',

@@ -17,7 +17,7 @@ type Props = {
 
 const MAX_FILE_SIZE = 40000000;
 // add extensions
-const ALLOWED_EXTENSION = ["pdf"];
+const ALLOWED_EXTENSION = ["pdf", "txt"];
 
 export const UploadImage = ({
   files,

@@ -45,6 +45,7 @@ export type ConversationPdf = $Result.DefaultSelection<Prisma.$ConversationPdfPa
 export namespace $Enums {
   export const SubmissionStatus: {
   INITIALIZED: 'INITIALIZED',
+  ANALYZED: 'ANALYZED',
   IN_PROGRESS: 'IN_PROGRESS',
   PROLONGATED: 'PROLONGATED',
   DECISION_MADE: 'DECISION_MADE',

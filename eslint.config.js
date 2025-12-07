@@ -20,6 +20,10 @@ export default tseslint.config(
     rules: {
       "@typescript-eslint/array-type": "off",
       "@typescript-eslint/consistent-type-definitions": "off",
+      "@typescript-eslint/no-empty-interface": 0,
+      "@typescript-eslint/no-empty-function": 0,
+      "@typescript-eslint/non-nullable-type-assertion-style": 0,
+      "@typescript-eslint/prefer-nullish-coalescing": 0,
       "@typescript-eslint/consistent-type-imports": [
         "warn",
         { prefer: "type-imports", fixStyle: "inline-type-imports" },

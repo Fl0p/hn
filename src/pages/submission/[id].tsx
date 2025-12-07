@@ -35,6 +35,13 @@ type Props = InferGetStaticPropsType<typeof getServerSideProps>;
 const QuestionPage = ({ id }: Props) => {
   const queryClient = api.useUtils();
   const { data: submission } = api.post.getPostById.useQuery({ id });
+  const { mutate: analyze, isPending: isAnalyze } =
+    api.post.analyze.useMutation({
+      onSuccess: async () => {
+        void (await queryClient.post.getAll.invalidate());
+        void (await queryClient.post.getPostById.invalidate({ id }));
+      },
+    });
   const { mutate, isPending: isProlongating } = api.post.prolongate.useMutation(
     {
       onSuccess: async () => {
@@ -51,11 +58,14 @@ const QuestionPage = ({ id }: Props) => {
       },
     });
 
+  const handleAnalyze = () => {
+    if (!submission) return;
+    analyze({ id, name: submission.name ?? "" });
+  };
+
   const handleProlongate = () => {
-    const performProlongation = {
-      prolongatedPdfUrl: "prolongation.pdf" + Date.now().toString(),
-    };
-    mutate({ id, prolongatedPdfUrl: performProlongation.prolongatedPdfUrl });
+    if (!submission) return;
+    mutate({ id, name: submission.name ?? "" });
   };
 
   const handleMakeDecision = () => {
@@ -101,6 +111,13 @@ const QuestionPage = ({ id }: Props) => {
         <div className="flex gap-2">
           <Button
             variant="outline"
+            onClick={handleAnalyze}
+            disabled={isProlongating}
+          >
+            {isAnalyze ? "Analizowanie..." : "Analizuj"}
+          </Button>
+          <Button
+            variant="outline"
             onClick={handleProlongate}
             disabled={isProlongating}
           >
@@ -144,6 +161,30 @@ const QuestionPage = ({ id }: Props) => {
               {formatDate(submission?.updatedAt ?? null)}
             </dd>
           </div>
+          <div className="space-y-1">
+            <dt className="text-xs tracking-wide text-slate-500 uppercase">
+              Numar sprawy
+            </dt>
+            <dd className="text-base font-medium text-slate-900">
+              {submission?.caseNumber ?? null}
+            </dd>
+          </div>
+          <div className="space-y-1">
+            <dt className="text-xs tracking-wide text-slate-500 uppercase">
+              Strona sprawy
+            </dt>
+            <dd className="text-base font-medium text-slate-900">
+              {submission?.partyType ?? null}
+            </dd>
+          </div>
+          <div className="space-y-1">
+            <dt className="text-xs tracking-wide text-slate-500 uppercase">
+              Data zgłoszenia
+            </dt>
+            <dd className="text-base font-medium text-slate-900">
+              {formatDate(new Date(submission?.initDate ?? "2000-01-01"))}
+            </dd>
+          </div>
         </dl>
       </section>
 
@@ -183,7 +224,7 @@ const QuestionPage = ({ id }: Props) => {
                       className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 wrap-break-word"
                     >
                       <a
-                        href={"http://localhost:3033/" + document.url}
+                        href={document.url}
                         target="_blank"
                         rel="noreferrer"
                         className="text-slate-900 underline decoration-slate-400 underline-offset-2 hover:text-slate-600"

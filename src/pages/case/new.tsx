@@ -44,9 +44,6 @@ export default function NewCase() {
 
     mutate({
       name: body.id,
-      initDate: "2000-01-01",
-      caseNumber: "1234567890",
-      partyType: "private",
       initialPdfUrl: body.source_url,
     });
     return body;

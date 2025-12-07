@@ -33,6 +33,7 @@ model Post {
 
 enum SubmissionStatus {
     INITIALIZED
+    ANALYZED
     IN_PROGRESS
     PROLONGATED
     DECISION_MADE

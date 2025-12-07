@@ -112,8 +112,9 @@ const QuestionPage = ({ id }: Props) => {
           <Button
             size="sm"
             className={cn({ hidden: router.asPath === "/case/new" })}
+            asChild
           >
-            Dodaj sprawę
+            <Link href="/case/new">Dodaj sprawę</Link>
           </Button>
           <Button size="sm">Archiwum</Button>
           <Button size="sm">Ustawienia</Button>

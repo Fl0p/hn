@@ -291,6 +291,7 @@ See the [T3 Stack deployment guides](https://create.t3.gg/en/deployment/vercel) 
 
 ## Security
 
+- **Fully self-hosted ability**: tech details in /self-hosted/README.md 
 - **Input validation**: Zod schemas on all API inputs
 - **File upload restrictions**: Max 40MB, PDF files only
 - **Environment variables**: Validated using @t3-oss/env-nextjs

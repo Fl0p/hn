@@ -1,0 +1,614 @@
+app:
+  description: decyzja flow
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: decyzja flow
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/bedrock:0.0.51@a3e2b010edc18d99010c7caf437d073a0ec3fa663147a71c7e43fd0c2f842ee2
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: stvlynn/doc:0.0.1@900d82963e63c505136dfc77f3e06329326e714ca66bed668224e811f73efc7b
+    version: null
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: document-extractor
+      id: 1765071424023-source-1765071561770-target
+      source: '1765071424023'
+      sourceHandle: source
+      target: '1765071561770'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: document-extractor
+        targetType: llm
+      id: 1765071561770-source-1765071587501-target
+      source: '1765071561770'
+      sourceHandle: source
+      target: '1765071587501'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1765071587501-source-1765072147777-target
+      source: '1765071587501'
+      sourceHandle: source
+      target: '1765072147777'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: tool
+      id: 1765072147777-source-1765072422898-target
+      source: '1765072147777'
+      sourceHandle: source
+      target: '1765072422898'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: end
+      id: 1765072422898-source-1765072447817-target
+      source: '1765072422898'
+      sourceHandle: source
+      target: '1765072447817'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          default: ''
+          hint: ''
+          label: odwolanie
+          max_length: 48
+          options: []
+          placeholder: ''
+          required: true
+          type: file
+          variable: odwolanie
+      height: 88
+      id: '1765071424023'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_array_file: false
+        selected: false
+        title: Doc Extractor
+        type: document-extractor
+        variable_selector:
+        - '1765071424023'
+        - odwolanie
+      height: 92
+      id: '1765071561770'
+      position:
+        x: 468
+        y: 290
+      positionAbsolute:
+        x: 468
+        y: 290
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            model_name: Claude 4.5 Sonnet
+            temperature: 1
+          mode: chat
+          name: anthropic claude
+          provider: langgenius/bedrock/bedrock
+        prompt_template:
+        - id: f5ddd7a6-5640-4b9c-87ae-e12da77359ad
+          role: system
+          text: "You are a specialized legal data extraction assistant. Your sole\
+            \ task is to analyze the text of the provided appeal document (\"Odwołanie\"\
+            ) and extract data to populate the specific JSON structure below.\n\n\
+            ### INSTRUCTIONS:\n\n1.  **Analyze the Source Text:** Read the provided\
+            \ appeal document carefully. Focus on entities (names, addresses), dates,\
+            \ case numbers, and legal arguments.\n2.  **Extract Data for JSON Fields:**\n\
+            \    * **`meta.data_wydania_decyzji`**: Use today's date (formatted YYYY-MM-DD).\n\
+            \    * **`strona`**:\n        * `nazwa`: Full name of the appellant (e.g.,\
+            \ Stowarzyszenie...).\n        * `siedziba`: Address of the appellant\
+            \ found in the header or text.\n        * `adres_do_doreczen`: If different\
+            \ from `siedziba`, extract it. Otherwise, repeat `siedziba`.\n       \
+            \ * `krs`/`nip`: Extract if explicitly present in the text. If not found,\
+            \ leave as empty string \"\".\n    * **`organ_I_instancji`**:\n      \
+            \  * `nazwa`: The authority that issued the *challenged* decision (e.g.,\
+            \ Marszałek Województwa...).\n        * `data_decyzji`: Date of the challenged\
+            \ decision (look for \"z dnia...\").\n        * `znak_decyzji`: Reference\
+            \ number of the challenged decision (look for \"znak:\", \"Nr\").\n  \
+            \      * `kluczowe_ustalenia`: Briefly summarize why they were punished\
+            \ (e.g., \"wykonywanie działalności organizatora turystyki bez wpisu\"\
+            ).\n    * **`sprawa`**:\n        * `przedmiot`: What is the case about?\
+            \ (e.g., \"odwołanie od decyzji w sprawie zakazu wykonywania działalności\"\
+            ).\n        * `data_wszczecia_kontroli`: If mentioned (e.g., \"w dniu\
+            \ ... powziął informację\"), extract the date. Else \"\".\n    * **`odwolanie`**:\n\
+            \        * `data_wplywu`: Date the authority received the appeal (often\
+            \ stamped \"Wpłynęło...\" or mentioned in the header).\n        * `data_nadania`:\
+            \ Date the appeal was mailed/sent (often mentioned as \"nadano w dniu...\"\
+            \ or implied by the document date).\n        * `wniosek`: What does the\
+            \ appellant want? (e.g., \"uchylenie decyzji\", \"przekazanie do ponownego\
+            \ rozpatrzenia\").\n        * **`zarzuty` (CRITICAL)**: Extract the list\
+            \ of arguments. For each distinct argument found:\n            * `tytul`:\
+            \ A short, 3-6 word summary (e.g., \"Błędna reprezentacja strony\").\n\
+            \            * `opis`: A concise explanation of the argument (1-2 sentences).\n\
+            \            * `temat`: Classify as \"formalny\" (procedural), \"materialny\"\
+            \ (substantive), or \"inny\" (other).\n    * **`rozstrzygniecie`**: Leave\
+            \ fields `pkt_1` and `pkt_2` as empty strings \"\" (to be filled later\
+            \ by a human).\n    * **`podpis`**: Leave fields empty \"\" (to be filled\
+            \ later).\n\n3.  **Output Format:** Return **ONLY** the valid JSON object.\
+            \ Do not include markdown formatting (like ```json), comments, or explanations.\n\
+            \n### SOURCE TEXT:\n{{#1765071561770.text#}}"
+        - id: f53285a5-0ce2-45e2-a829-d8e9804894db
+          role: user
+          text: return json schema
+        selected: false
+        structured_output:
+          schema:
+            $schema: http://json-schema.org/draft-07/schema#
+            description: Schemat ekstrakcji danych z odwołania w celu wygenerowania
+              projektu decyzji organu II instancji.
+            properties:
+              meta:
+                properties:
+                  data_wydania_decyzji:
+                    description: Data wydania nowej decyzji (format RRRR-MM-DD). Jeśli
+                      nieznana, wpisz datę bieżącą.
+                    type: string
+                  typ_rozstrzygniecia_kod:
+                    default: '1'
+                    description: Kod podstawy prawnej z art. 138 KPA (np. '1' - utrzymanie
+                      w mocy, '2' - uchylenie).
+                    type: string
+                required:
+                - data_wydania_decyzji
+                type: object
+              odwolanie:
+                description: Szczegóły wniesionego odwołania.
+                properties:
+                  data_nadania:
+                    description: Data nadania odwołania na poczcie (ważne dla terminów).
+                    type: string
+                  data_wplywu:
+                    description: Data wpływu odwołania do urzędu (RRRR-MM-DD).
+                    type: string
+                  wniosek:
+                    description: Czego żąda strona (np. 'uchylenie decyzji w całości').
+                    type: string
+                  zarzuty:
+                    description: Lista zarzutów podniesionych w odwołaniu.
+                    items:
+                      properties:
+                        opis:
+                          description: Zwięzły opis argumentacji strony.
+                          type: string
+                        temat:
+                          description: Kategoria zarzutu.
+                          enum:
+                          - formalny
+                          - materialny
+                          - proceduralny
+                          - inny
+                          type: string
+                        tytul:
+                          description: Krótki nagłówek zarzutu (np. 'Naruszenie przepisów
+                            o reprezentacji').
+                          type: string
+                      required:
+                      - tytul
+                      - opis
+                      type: object
+                    type: array
+                required:
+                - wniosek
+                - zarzuty
+                type: object
+              organ_I_instancji:
+                description: Dane organu, który wydał zaskarżaną decyzję.
+                properties:
+                  data_decyzji:
+                    description: Data wydania zaskarżanej decyzji (format RRRR-MM-DD).
+                    type: string
+                  kluczowe_ustalenia:
+                    description: Krótkie podsumowanie, co ustalił organ I instancji
+                      (np. 'brak wpisu do rejestru').
+                    type: string
+                  nazwa:
+                    description: Nazwa organu (np. Marszałek Województwa Mazowieckiego).
+                    type: string
+                  znak_decyzji:
+                    description: Znak sprawy/numer zaskarżanej decyzji.
+                    type: string
+                required:
+                - nazwa
+                - data_decyzji
+                - znak_decyzji
+                type: object
+              podpis:
+                description: Dane osoby podpisującej nową decyzję.
+                properties:
+                  imie_nazwisko:
+                    type: string
+                  stanowisko:
+                    type: string
+                type: object
+              rozstrzygniecie:
+                description: Proponowana sentencja nowej decyzji (do wypełnienia przez
+                  AI lub użytkownika).
+                properties:
+                  pkt_1:
+                    description: Treść punktu 1 (np. 'utrzymuję w mocy zaskarżoną
+                      decyzję').
+                    type: string
+                  pkt_2:
+                    description: Treść punktu 2 (opcjonalnie).
+                    type: string
+                type: object
+              sprawa:
+                description: Kontekst sprawy administracyjnej.
+                properties:
+                  data_wszczecia_kontroli:
+                    description: Data rozpoczęcia kontroli lub powzięcia informacji
+                      przez organ (jeśli występuje).
+                    type: string
+                  przedmiot:
+                    description: Opis przedmiotu sprawy (np. 'stwierdzenie wykonywania
+                      działalności bez wpisu').
+                    type: string
+                required:
+                - przedmiot
+                type: object
+              strona:
+                description: Dane podmiotu wnoszącego odwołanie (Skarżącego).
+                properties:
+                  adres_do_doreczen:
+                    description: Adres do korespondencji, jeśli inny niż siedziba.
+                    type: string
+                  krs:
+                    description: Numer KRS (jeśli dostępny).
+                    type: string
+                  nazwa:
+                    description: Pełna nazwa prawna strony (np. Stowarzyszenie...).
+                    type: string
+                  nip:
+                    description: Numer NIP (jeśli dostępny).
+                    type: string
+                  siedziba:
+                    description: Adres siedziby strony.
+                    type: string
+                required:
+                - nazwa
+                - siedziba
+                type: object
+            required:
+            - strona
+            - organ_I_instancji
+            - odwolanie
+            title: Dane do Decyzji Administracyjnej
+            type: object
+        structured_output_enabled: true
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1765071587501'
+      position:
+        x: 843
+        y: 318
+      positionAbsolute:
+        x: 843
+        y: 318
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            model_name: Claude 4.5 Sonnet
+            temperature: 1
+          mode: chat
+          name: anthropic claude
+          provider: langgenius/bedrock/bedrock
+        prompt_template:
+        - id: 7deadbdf-25e9-48a5-b49c-37cc67c04a40
+          role: system
+          text: "Act as a strict template rendering engine (like Jinja2). Your task\
+            \ is to merge the provided **JSON Data** into the **Markdown Template**.\n\
+            \n### INSTRUCTIONS:\n1.  **Replacement:** Replace every placeholder enclosed\
+            \ in double curly braces `{{ key.subkey }}` with the corresponding value\
+            \ from the JSON data.\n2.  **Loops:** Process the `{% for item in list\
+            \ %}` block. For each item in the JSON array, repeat the content inside\
+            \ the loop, replacing the variables accordingly.\n3.  **Empty Values:**\
+            \ If a value in JSON is an empty string `\"\"` or `null`, leave the space\
+            \ in the template blank (or remove the placeholder), but do not break\
+            \ the document structure.\n4.  **Formatting:** Preserve all Markdown formatting\
+            \ (headers `#`, bold `**`, tables, etc.) exactly as they appear in the\
+            \ template. Do not summarize or alter the Polish legal text outside of\
+            \ the placeholders.\n5.  **Output:** Return **only** the final filled\
+            \ Markdown document.\n\n---\n\n### INPUT 1: JSON DATA\n{{#1765071587501.structured_output#}}\n\
+            \n### INPUT 2: MARKDOWN TEMPLATE\n\n# DECYZJA\n\n**Minister Sportu i Turystyki**\n\
+            Warszawa, dnia {{meta.data_wydania_decyzji}} r.\n\n**Adres do doręczeń:**\n\
+            ul. Senatorska 14\n00-082 Warszawa\n\n---\n\n## DECYZJA\n\nNa podstawie\
+            \ art. 138 § 1 pkt {{meta.typ_rozstrzygniecia_kod}} w zw. z art. 127 §\
+            \ 2 ustawy z dnia 14 czerwca 1960 r. – Kodeks postępowania administracyjnego\
+            \ (Dz. U. z 2023 r. poz. 775 ze zm.), zwanej dalej: „k.p.a.”, w związku\
+            \ z art. 30 ust. 9 ustawy o imprezach turystycznych i powiązanych usługach\
+            \ turystycznych (Dz. U. z 2023 r. poz. 2211), zwanej dalej: „ustawą o\
+            \ UITPUT”,\n\n**po rozpatrzeniu odwołania wniesionego przez:**\n\n**{{strona.nazwa}}**\n\
+            z siedzibą w: {{strona.siedziba}}\n(adres do doręczeń: {{strona.adres_do_doreczen}})\n\
+            KRS: {{strona.krs}}, NIP: {{strona.nip}}\nzwanego dalej: „Stroną”,\n\n\
+            **od decyzji organu pierwszej instancji:**\n\n**{{organ_I_instancji.nazwa}}**\n\
+            z dnia {{organ_I_instancji.data_decyzji}} r., znak: {{organ_I_instancji.znak_decyzji}},\n\
+            \n**w przedmiocie:**\n{{sprawa.przedmiot}},\n\n**orzekam:**\n\n1. {{rozstrzygniecie.pkt_1}}\n\
+            2. {{rozstrzygniecie.pkt_2}}\n\n---\n\n### UZASADNIENIE\n\n**I. Stan faktyczny\
+            \ i przebieg postępowania**\n\nOrgan pierwszej instancji, {{organ_I_instancji.nazwa}},\
+            \ decyzją z dnia {{organ_I_instancji.data_decyzji}} r. (znak: {{organ_I_instancji.znak_decyzji}})\
+            \ orzekł o {{sprawa.przedmiot}}.\nJako podstawę faktyczną wskazano: {{organ_I_instancji.kluczowe_ustalenia}}.\n\
+            W szczególności organ I instancji ustalił, że w okresie od {{sprawa.data_wszczecia_kontroli}}\
+            \ Strona prowadziła działalność bez wymaganego wpisu.\n\n**II. Zarzuty\
+            \ odwołania**\n\nW dniu {{odwolanie.data_wplywu}} r. (data nadania: {{odwolanie.data_nadania}}\
+            \ r.) wpłynęło odwołanie Strony.\nStrona wniosła o: **{{odwolanie.wniosek}}**.\n\
+            \nW uzasadnieniu odwołania Strona podniosła następujące zarzuty i argumenty:\n\
+            \n{% for zarzut in odwolanie.zarzuty %}\n* **Ad. {{zarzut.tytul}}** (Kategoria:\
+            \ {{zarzut.temat}})\n    Strona podnosi, że: {{zarzut.opis}}\n{% endfor\
+            \ %}\n\n**III. Rozważania prawne Organu Odwoławczego**\n\nMinister Sportu\
+            \ i Turystyki, po ponownej analizie akt sprawy, zważył, co następuje:\n\
+            \nZgodnie z art. 30 ust. 7 pkt 4 ustawy o UITPUT, organ wydaje decyzję\
+            \ o zakazie wykonywania działalności w przypadku stwierdzenia braku wpisu\
+            \ do Rejestru.\n\n**Odnosząc się do zarzutów Strony:**\n\nAnaliza zgromadzonego\
+            \ materiału dowodowego nie pozwala na uwzględnienie argumentacji przedstawionej\
+            \ w odwołaniu (chyba że w sentencji orzeczono inaczej).\n\n1.  W zakresie\
+            \ zarzutów dotyczących **{{odwolanie.zarzuty[0].tytul}}**:\n    Organ\
+            \ odwoławczy wskazuje, że przepisy ustawy o imprezach turystycznych są\
+            \ bezwzględnie obowiązujące. Fakt podniesiony przez stronę ({{odwolanie.zarzuty[0].opis}})\
+            \ nie zwalnia z obowiązku posiadania wpisu do Rejestru w świetle zgromadzonych\
+            \ dowodów.\n\n2.  W zakresie pozostałych zarzutów:\n    Argumentacja Strony\
+            \ nie znajduje potwierdzenia w przepisach prawa. Decyzja organu I instancji\
+            \ w zakresie ustaleń faktycznych była prawidłowa.\n\n*(Jeśli decyzja jest\
+            \ zmieniana - wypełnij poniżej, jeśli utrzymana - usuń)*\nNależy jednak\
+            \ wskazać, że sentencja decyzji wymagała korekty w zakresie określonym\
+            \ w pkt 1 niniejszego rozstrzygnięcia, zgodnie z art. 138 § 1 pkt 2 k.p.a.\n\
+            \nMając powyższe na uwadze, orzeczono jak w sentencji.\n\n---\n\n### POUCZENIE\n\
+            \nNiniejsza decyzja jest ostateczna w administracyjnym toku instancji.\n\
+            \nNa podstawie art. 53 § 1 i art. 54 § 1 ustawy z dnia 30 sierpnia 2002\
+            \ r. – Prawo o postępowaniu przed sądami administracyjnymi (Dz. U. z 2023\
+            \ r. poz. 1634 ze zm.), Stronie przysługuje prawo wniesienia skargi do\
+            \ Wojewódzkiego Sądu Administracyjnego w Warszawie.\n\nSkargę wnosi się\
+            \ za pośrednictwem Ministra Sportu i Turystyki w terminie 30 dni od dnia\
+            \ doręczenia niniejszej decyzji.\nWpis stały od skargi wynosi 200 zł.\
+            \ Strona może ubiegać się o przyznanie prawa pomocy.\n\n**Z upoważnienia\
+            \ Ministra Sportu i Turystyki**\n\n{{podpis.imie_nazwisko}}\n{{podpis.stanowisko}}\n\
+            \n*(podpisano kwalifikowanym podpisem elektronicznym)*\n\n**Otrzymują:**\n\
+            1. {{strona.nazwa}} – na adres: {{strona.adres_do_doreczen}}\n2. {{organ_I_instancji.nazwa}}\n\
+            3. a/a"
+        - id: 535f6806-c6e4-408f-a600-7c0509669c94
+          role: user
+          text: wygeneruj text as .md, don't put mardown on start of the document.
+        selected: false
+        title: LLM 2
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1765072147777'
+      position:
+        x: 1198.977917876302
+        y: 352.5826152252598
+      positionAbsolute:
+        x: 1198.977917876302
+        y: 352.5826152252598
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_team_authorization: true
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The Markdown content to be converted to Word document
+            ja_JP: Word ドキュメントに変換する Markdown コンテンツ
+            pt_BR: O conteúdo Markdown a ser convertido para documento Word
+            zh_Hans: 要转换为Word文档的Markdown内容
+          label:
+            en_US: Markdown Content
+            ja_JP: Markdown コンテンツ
+            pt_BR: Conteúdo Markdown
+            zh_Hans: Markdown内容
+          llm_description: The Markdown content that will be converted to a Word document
+          max: null
+          min: null
+          name: markdown_content
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The title of the Word document
+            ja_JP: Word ドキュメントのタイトル
+            pt_BR: O título do documento Word
+            zh_Hans: Word文档的标题
+          label:
+            en_US: Document Title
+            ja_JP: ドキュメントタイトル
+            pt_BR: Título do Documento
+            zh_Hans: 文档标题
+          llm_description: The title that will be displayed at the top of the Word
+            document
+          max: null
+          min: null
+          name: title
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          markdown_content: ''
+          title: ''
+        provider_id: stvlynn/doc/doc
+        provider_name: stvlynn/doc/doc
+        provider_type: builtin
+        selected: false
+        title: Markdown to DOCX Converter
+        tool_configurations: {}
+        tool_description: Convert Markdown content to a DOCX (Word) document
+        tool_label: Markdown to DOCX Converter
+        tool_name: markdown_to_docx_converter
+        tool_node_version: '2'
+        tool_parameters:
+          markdown_content:
+            type: mixed
+            value: '{{#1765072147777.text#}}'
+          title:
+            type: mixed
+            value: null
+        type: tool
+      height: 52
+      id: '1765072422898'
+      position:
+        x: 1580.2244577181784
+        y: 374.76910249782816
+      positionAbsolute:
+        x: 1580.2244577181784
+        y: 374.76910249782816
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1765072422898'
+          - files
+          value_type: array[file]
+          variable: files
+        selected: false
+        title: End
+        type: end
+      height: 88
+      id: '1765072447817'
+      position:
+        x: 1914.8657878189695
+        y: 395.9387450030655
+      positionAbsolute:
+        x: 1914.8657878189695
+        y: 395.9387450030655
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -87.43923756584263
+      y: 37.863315662509805
+      zoom: 0.5935750994963415
+  rag_pipeline_variables: []

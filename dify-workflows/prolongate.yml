@@ -1,0 +1,586 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: Dokumenty
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/bedrock:0.0.51@a3e2b010edc18d99010c7caf437d073a0ec3fa663147a71c7e43fd0c2f842ee2
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: bowenliang123/md_exporter:2.2.0@9f39c2c2c1cd09180e2cc053090adc9886019483f502727467f136712b8b9639
+    version: null
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: document-extractor
+      id: 1763908977276-source-1765041927409-target
+      selected: false
+      source: '1763908977276'
+      sourceHandle: source
+      target: '1765041927409'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: document-extractor
+        targetType: llm
+      id: 1765041927409-source-1765042526570-target
+      selected: false
+      source: '1765041927409'
+      sourceHandle: source
+      target: '1765042526570'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1765042526570-source-1765053063857-target
+      selected: false
+      source: '1765042526570'
+      sourceHandle: source
+      target: '1765053063857'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: tool
+      id: 1765053063857-source-1765057077514-target
+      selected: false
+      source: '1765053063857'
+      sourceHandle: source
+      target: '1765057077514'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: tool
+        targetType: end
+      id: 1765057077514-source-1765054278815-target
+      source: '1765057077514'
+      sourceHandle: source
+      target: '1765054278815'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          default: ''
+          hint: ''
+          label: odwolanie
+          max_length: 5
+          options: []
+          placeholder: ''
+          required: true
+          type: file
+          variable: odwolanie
+      height: 88
+      id: '1763908977276'
+      position:
+        x: -347.9997684423048
+        y: 219.20931959307242
+      positionAbsolute:
+        x: -347.9997684423048
+        y: 219.20931959307242
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_array_file: false
+        selected: false
+        title: Doc Extractor
+        type: document-extractor
+        variable_selector:
+        - '1763908977276'
+        - odwolanie
+      height: 92
+      id: '1765041927409'
+      position:
+        x: 164.92624131664536
+        y: 187.211915810574
+      positionAbsolute:
+        x: 164.92624131664536
+        y: 187.211915810574
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: anthropic claude
+          provider: langgenius/bedrock/bedrock
+        prompt_template:
+        - id: aa190748-501c-4781-bef8-4f0c7c8e8f2c
+          role: system
+          text: "You are a specialized legal data extraction assistant. Your sole\
+            \ task is to analyze the text of the provided appeal document (\"Odwołanie\"\
+            ) and extract data to populate the specific JSON structure below.\n\n\
+            ### INSTRUCTIONS:\n\n1.  **Analyze the Source Text:** Read the provided\
+            \ appeal document carefully. Focus on entities (names, addresses), dates,\
+            \ case numbers, and legal arguments.\n2.  **Extract Data for JSON Fields:**\n\
+            \    * **`meta.data_wydania_decyzji`**: Use today's date (formatted YYYY-MM-DD).\n\
+            \    * **`strona`**:\n        * `nazwa`: Full name of the appellant (e.g.,\
+            \ Stowarzyszenie...).\n        * `siedziba`: Address of the appellant\
+            \ found in the header or text.\n        * `adres_do_doreczen`: If different\
+            \ from `siedziba`, extract it. Otherwise, repeat `siedziba`.\n       \
+            \ * `krs`/`nip`: Extract if explicitly present in the text. If not found,\
+            \ leave as empty string \"\".\n    * **`organ_I_instancji`**:\n      \
+            \  * `nazwa`: The authority that issued the *challenged* decision (e.g.,\
+            \ Marszałek Województwa...).\n        * `data_decyzji`: Date of the challenged\
+            \ decision (look for \"z dnia...\").\n        * `znak_decyzji`: Reference\
+            \ number of the challenged decision (look for \"znak:\", \"Nr\").\n  \
+            \      * `kluczowe_ustalenia`: Briefly summarize why they were punished\
+            \ (e.g., \"wykonywanie działalności organizatora turystyki bez wpisu\"\
+            ).\n    * **`sprawa`**:\n        * `przedmiot`: What is the case about?\
+            \ (e.g., \"odwołanie od decyzji w sprawie zakazu wykonywania działalności\"\
+            ).\n        * `data_wszczecia_kontroli`: If mentioned (e.g., \"w dniu\
+            \ ... powziął informację\"), extract the date. Else \"\".\n    * **`odwolanie`**:\n\
+            \        * `data_wplywu`: Date the authority received the appeal (often\
+            \ stamped \"Wpłynęło...\" or mentioned in the header).\n        * `data_nadania`:\
+            \ Date the appeal was mailed/sent (often mentioned as \"nadano w dniu...\"\
+            \ or implied by the document date).\n        * `wniosek`: What does the\
+            \ appellant want? (e.g., \"uchylenie decyzji\", \"przekazanie do ponownego\
+            \ rozpatrzenia\").\n        * **`zarzuty` (CRITICAL)**: Extract the list\
+            \ of arguments. For each distinct argument found:\n            * `tytul`:\
+            \ A short, 3-6 word summary (e.g., \"Błędna reprezentacja strony\").\n\
+            \            * `opis`: A concise explanation of the argument (1-2 sentences).\n\
+            \            * `temat`: Classify as \"formalny\" (procedural), \"materialny\"\
+            \ (substantive), or \"inny\" (other).\n    * **`rozstrzygniecie`**: Leave\
+            \ fields `pkt_1` and `pkt_2` as empty strings \"\" (to be filled later\
+            \ by a human).\n    * **`podpis`**: Leave fields empty \"\" (to be filled\
+            \ later).\n\n3.  **Output Format:** Return **ONLY** the valid JSON object.\
+            \ Do not include markdown formatting (like ```json), comments, or explanations.\n\
+            \n### SOURCE TEXT:\n{{#1765041927409.text#}}"
+        - id: a94f63da-5981-4def-86e5-c6951ccca0d2
+          role: user
+          text: return json schema
+        selected: false
+        structured_output:
+          schema:
+            $id: http://example.com/legal_document_metadata.schema.json
+            $schema: http://json-schema.org/draft-07/schema#
+            description: Schema for extracting key information from a legal or official
+              document.
+            properties:
+              access_address:
+                description: Адрес для ознакомления/доступа к материалам
+                type: string
+              access_hours:
+                description: Часы работы или часы доступа для ознакомления
+                type: string
+              access_phone:
+                description: Контактный телефон для справок/доступа
+                type: string
+              case_number:
+                description: Номер дела или регистрационный номер документа (например,
+                  А40-12345/2023)
+                type: string
+              case_subject:
+                description: Краткое содержание или предмет дела/обращения
+                type: string
+              case_type:
+                description: Тип дела (Административное, Гражданское, Арбитражное
+                  и т.п.)
+                type: string
+              city:
+                description: Город, где составлен документ или где расположена организация
+                type: string
+              date:
+                description: 'Дата составления документа (рекомендуемый формат: ГГГГ-ММ-ДД)'
+                format: date
+                type: string
+              justification_reason:
+                description: Причина, основание или мотивировка, упомянутая в документе
+                type: string
+              legal_position:
+                description: Юридическая должность или звание подписавшего лица
+                type: string
+              legal_year:
+                description: Год, который упоминается в документе как юридически значимый
+                type: string
+              minister_org_name:
+                description: Наименование вышестоящего или контролирующего органа/министерства
+                  (если упоминается)
+                type: string
+              new_deadline:
+                description: 'Новый или запрашиваемый срок/дедлайн (рекомендуемый
+                  формат: ГГГГ-ММ-ДД)'
+                format: date
+                type: string
+              org_address:
+                description: Адрес организации-отправителя/учреждения
+                type: string
+              org_email:
+                description: Электронная почта организации-отправителя/учреждения
+                format: email
+                type: string
+              org_full_name:
+                description: Полное наименование организации-отправителя/учреждения
+                  (суда, министерства и т.п.)
+                type: string
+              org_website:
+                description: Веб-сайт организации-отправителя/учреждения
+                format: uri
+                type: string
+              party_address:
+                description: Адрес стороны, к которой относится дело/документ
+                type: string
+              party_name:
+                description: Наименование или ФИО стороны, к которой относится дело/документ
+                  (Истец, Ответчик, Заявитель)
+                type: string
+              signatory_name:
+                description: ФИО лица, подписавшего документ
+                type: string
+              signatory_title:
+                description: Должность лица, подписавшего документ (если отличается
+                  от legal_position)
+                type: string
+            required:
+            - org_full_name
+            - city
+            - date
+            title: Legal Document Metadata
+            type: object
+        structured_output_enabled: true
+        title: LLM 5
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1765042526570'
+      position:
+        x: 847.8024333722751
+        y: 336.4216754717127
+      positionAbsolute:
+        x: 847.8024333722751
+        y: 336.4216754717127
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            model_name: Claude 4.5 Sonnet
+            temperature: 0.7
+          mode: chat
+          name: anthropic claude
+          provider: langgenius/bedrock/bedrock
+        prompt_template:
+        - id: 4e234209-cf71-433a-be39-67ad404fcbbb
+          role: system
+          text: 'Na podstawie poniższego obiektu JSON zawierającego metadane dokumentu,
+            wypełnij podany niżej szablon postanowienia administracyjnego.
+
+
+            **Zasady wypełniania:**
+
+            1.  Każde pole w szablonie oznaczone podwójnymi nawiasami klamrowymi (np.
+            {{ORG_FULL_NAME}}) zastąp wartością odpowiadającego mu klucza z obiektu
+            JSON.
+
+            2.  Jeśli wartość klucza w JSON jest pusta (""), usuń cały wiersz lub
+            fragment, który odnosi się do tego pola, aby zachować czystość i spójność
+            dokumentu (np. jeśli puste jest {{ORG_WEBSITE}}, usuń wiersz, gdzie ten
+            element się pojawiałby w adresie nagłówka).
+
+            3.  Zacznij odpowiedź natychmiast od wypełnionego dokumentu, bez żadnych
+            dodatkowych komentarzy, wstępów czy wyjaśnień.
+
+            4. Generuj text w enkodingie ISO-8859-2 (Latin-2)
+
+
+            ---
+
+
+            ### DANE JSON:
+
+            {{#1765042526570.structured_output#}}
+
+            ---
+
+
+            ### SZABLON DOKUMENTU:
+
+            {{org_full_name}} {{org_address}} {{org_email}} {{org_website}} {{city}},
+            dnia {{date}} **POSTANOWIENIE** 1. Na podstawie art. 36 § 1 ustawy z dnia
+            14 czerwca 1960 r. – Kodeks postępowania administracyjnego (Dz. U. z {{legal_year}}
+            r., poz. {{legal_position}}), zwanej dalej „K.p.a.”, wyznaczam nowy termin
+            załatwienia sprawy dotyczącej {{case_type}}: **Strona / Podmiot:** {{party_name}},
+            {{party_address}} **Sygnatura / znak sprawy:** {{case_number}} **Sprawa
+            dotyczy:** {{case_subject}} Nowy termin załatwienia sprawy wyznaczam na
+            dzień **{{new_deadline}}**. 2. Informuję, że na podstawie art. 10 § 1
+            K.p.a., strona postępowania ma prawo zapoznać się z aktami sprawy i wypowiedzieć
+            co do zebranych dowodów oraz materiałów. Uprawnienie to można zrealizować
+            w terminie **7 dni** od dnia otrzymania niniejszego zawiadomienia. Zgodnie
+            z art. 73 § 1 i § 1a K.p.a., strona ma prawo wglądu w akta sprawy, sporządzania
+            notatek, kopii lub odpisów; czynności te dokonywane są w lokalu organu
+            administracji publicznej w obecności pracownika tego organu. Akta dostępne
+            są w: **{{access_address}}**, w dni robocze, w godzinach **{{access_hours}}**,
+            po wcześniejszym telefonicznym umówieniu pod numerem: **{{access_phone}}**.
+            --- ## Uzasadnienie Biorąc pod uwagę **{{justification_reason}}**, a także
+            konieczność wszechstronnej analizy zgromadzonego materiału dowodowego
+            oraz umożliwienia stronie ewentualnego wypowiedzenia się przed wydaniem
+            decyzji, organ – działając na podstawie wskazanych powyżej przepisów prawa
+            – wyznaczył nowy termin rozstrzygnięcia sprawy na **{{new_deadline}}**.
+            --- ## Pouczenie Na niniejsze postanowienie **zażalenie nie przysługuje**.
+            Stronie służy jednak prawo wniesienia **ponaglenia**, zgodnie z art. 37
+            § 1–3 K.p.a. Ponaglenie powinno zawierać uzasadnienie. --- **Z upoważnienia
+            {{minister_org_name}}** **{{signatory_title}}** {{signatory_name}} _(podpisano
+            kwalifikowanym podpisem elektronicznym)_'
+        - id: 9534954e-b84b-4c86-809f-a2340fc7e891
+          role: user
+          text: wygeneruj text as .md, don't put mardown on start of the document.
+        selected: true
+        title: przedluzenie
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1765053063857'
+      position:
+        x: 1235.5999457484804
+        y: 336.4216754717127
+      positionAbsolute:
+        x: 1235.5999457484804
+        y: 336.4216754717127
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1765057077514'
+          - files
+          value_type: array[file]
+          variable: files
+        selected: false
+        title: End 2
+        type: end
+      height: 88
+      id: '1765054278815'
+      position:
+        x: 2386.131637533167
+        y: 274.8242873295463
+      positionAbsolute:
+        x: 2386.131637533167
+        y: 274.8242873295463
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_team_authorization: true
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Markdown text
+            ja_JP: Markdown text
+            pt_BR: Markdown text
+            zh_Hans: Markdown格式文本
+          label:
+            en_US: Markdown text
+            ja_JP: Markdown text
+            pt_BR: Markdown text
+            zh_Hans: Markdown格式文本
+          llm_description: ''
+          max: null
+          min: null
+          name: md_text
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: string
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Optional docx template file for styling。Use "Home"-"Styles Pane"
+              in Microsoft Word to edit styles of the docx file.
+            ja_JP: Optional docx template file for styling。Use "Home"-"Styles Pane"
+              in Microsoft Word to edit styles of the docx file.
+            pt_BR: Optional docx template file for styling。Use "Home"-"Styles Pane"
+              in Microsoft Word to edit styles of the docx file.
+            zh_Hans: 可选的docx模板文件，用于样式控制。使用Microsoft Word中“开始”-“样式窗格”对docx文件的样式进行编辑。
+          label:
+            en_US: DOCX Template File
+            ja_JP: DOCX Template File
+            pt_BR: DOCX Template File
+            zh_Hans: DOCX 模板文件
+          llm_description: An optional .pptx file that serves as a template for the
+            generated presentation
+          max: null
+          min: null
+          name: docx_template_file
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: file
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: Optional custom output file name, and the filename suffix is not
+              required.
+            ja_JP: Optional custom output file name, and the filename suffix is not
+              required.
+            pt_BR: Optional custom output file name, and the filename suffix is not
+              required.
+            zh_Hans: 可选的自定义输出文件名，后缀名无需指定
+          label:
+            en_US: Output Filename
+            ja_JP: Output Filename
+            pt_BR: Output Filename
+            zh_Hans: 输出文件名
+          llm_description: ''
+          max: null
+          min: null
+          name: output_filename
+          options: []
+          placeholder: null
+          precision: null
+          required: false
+          scope: null
+          template: null
+          type: string
+        params:
+          docx_template_file: ''
+          md_text: ''
+          output_filename: ''
+        provider_id: bowenliang123/md_exporter/md_exporter
+        provider_name: bowenliang123/md_exporter/md_exporter
+        provider_type: builtin
+        selected: false
+        title: Markdown to DOCX file
+        tool_configurations: {}
+        tool_description: Generate DOCX file from Markdown text
+        tool_label: Markdown to DOCX file
+        tool_name: md_to_docx
+        tool_node_version: '2'
+        tool_parameters:
+          docx_template_file:
+            type: constant
+            value: null
+          md_text:
+            type: mixed
+            value: '{{#1765053063857.text#}}'
+          output_filename:
+            type: mixed
+            value: null
+        type: tool
+      height: 52
+      id: '1765057077514'
+      position:
+        x: 1798.0893706853228
+        y: 316.92991841426266
+      positionAbsolute:
+        x: 1798.0893706853228
+        y: 316.92991841426266
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 30.282418318658983
+      y: 325.51084999640966
+      zoom: 0.5566989625860349
+  rag_pipeline_variables: []

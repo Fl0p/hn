@@ -235,6 +235,8 @@ The system is designed to integrate with [Dify](https://dify.ai/) for AI orchest
 - **Similar Case Search**: Semantic search across historical decisions
 - **Risk Assessment**: Automated compliance and risk scoring
 
+Dify Workflow DSLs are located in dify-workflows/*.yml
+
 For detailed architecture, see [docs/architecture.md](./docs/architecture.md).
 
 ## Code Conventions

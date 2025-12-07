@@ -5,9 +5,12 @@ import { Button } from "~/components/ui/button";
 import { UploadImage } from "~/components/upload-pdf";
 import { api } from "~/utils/api";
 import Link from "next/link";
+import { PacmanLoader } from "react-spinners";
+import { cn } from "~/utils";
 
 export default function NewCase() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const queryClient = api.useUtils();
   const { mutate, isPending: isCreating } = api.post.create.useMutation({
     onSuccess: async (data) => {
@@ -20,6 +23,7 @@ export default function NewCase() {
   const [files, setFiles] = useState<File[]>([]);
 
   async function sendPdf(file: File) {
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("file", file);
 
@@ -46,6 +50,7 @@ export default function NewCase() {
       name: body.id,
       initialPdfUrl: body.source_url,
     });
+    setIsLoading(false);
     return body;
   }
 
@@ -56,6 +61,22 @@ export default function NewCase() {
         <meta name="description" content="Dodaj nową sprawę" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <header className="body-lg-bold relative flex items-center justify-between gap-4 p-4">
+        <Link href="/">Hacknation 2025</Link>
+        {isLoading && (
+          <PacmanLoader size={12} className="absolute right-12 -bottom-8" />
+        )}
+        <div className="flex items-center gap-4">
+          <Button
+            size="sm"
+            className={cn({ hidden: router.asPath === "/case/new" })}
+          >
+            Dodaj sprawę
+          </Button>
+          <Button size="sm">Archiwum</Button>
+          <Button size="sm">Ustawienia</Button>
+        </div>
+      </header>
       <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
           <h1 className="text-4xl font-bold text-white">Dodaj nową sprawę</h1>

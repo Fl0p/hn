@@ -2,6 +2,10 @@
 
 An intelligent system designed to support adjudicators in public administration with administrative case management, document analysis, and decision generation. Built with modern web technologies and AI orchestration capabilities.
 
+##  Video Demo
+
+https://youtu.be/_nNeH7hYhEI
+
 ## Overview
 
 This application streamlines the administrative decision-making process by providing:

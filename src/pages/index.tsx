@@ -73,7 +73,7 @@ export default function Home() {
                           <ItemDescription className="flex flex-row gap-2">
                             Status: {submission.status}
                             <div
-                              className={cn("", {
+                              className={cn("text-[#009900]", {
                                 "text-[#ff0000]":
                                   deadline.getTime() < new Date().getTime(),
                               })}

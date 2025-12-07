@@ -1,3 +1,4 @@
+import { SubmissionStatus } from "generated/prisma";
 import { type GetStaticPropsContext, type InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
@@ -156,7 +157,9 @@ const QuestionPage = ({ id }: Props) => {
               {formatDate(submission?.updatedAt ?? null)}
             </dd>
           </div>
-          <div className="space-y-1">
+          <div className={cn("space-y-1",{
+            'hidden': submission?.status === SubmissionStatus.INITIALIZED
+          })}>
             <dt className="text-xs tracking-wide text-slate-500 uppercase">
               Numar sprawy
             </dt>
@@ -164,7 +167,9 @@ const QuestionPage = ({ id }: Props) => {
               {submission?.caseNumber ?? null}
             </dd>
           </div>
-          <div className="space-y-1">
+          <div className={cn("space-y-1",{
+            'hidden': submission?.status === SubmissionStatus.INITIALIZED
+          })}>
             <dt className="text-xs tracking-wide text-slate-500 uppercase">
               Strona sprawy
             </dt>
@@ -172,7 +177,9 @@ const QuestionPage = ({ id }: Props) => {
               {submission?.partyType ?? null}
             </dd>
           </div>
-          <div className="space-y-1">
+          <div className={cn("space-y-1",{
+            'hidden': submission?.status === SubmissionStatus.INITIALIZED
+          })}>
             <dt className="text-xs tracking-wide text-slate-500 uppercase">
               Data zgłoszenia
             </dt>
@@ -180,12 +187,14 @@ const QuestionPage = ({ id }: Props) => {
               {formatDate(initDate)}
             </dd>
           </div>
-          <div className="space-y-1">
+          <div className={cn("space-y-1",{
+            'hidden': submission?.status === SubmissionStatus.INITIALIZED
+          })}>
             <dt className="text-xs tracking-wide text-slate-500 uppercase">
               Termin odpowiedzi
             </dt>
             <dd
-              className={cn("text text-base font-medium text-slate-900", {
+              className={cn("text text-base font-medium text-[#009900]", {
                 "text-[#ff0000]": deadline.getTime() < new Date().getTime(),
               })}
             >

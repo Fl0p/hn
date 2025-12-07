@@ -124,6 +124,7 @@ export const postRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      console.log("🚀 ~ prolongate:publicProcedure ~ input:", input);
       const response = await fetch(
         "https://dify.aimost.pl/v1/workflows/9fe8bd15-5958-4b46-b300-723069f0748d/run",
         {
@@ -146,6 +147,7 @@ export const postRouter = createTRPCRouter({
           }),
         },
       );
+      
       const body = (await response.json()) as unknown as {
         task_id: string;
         workflow_run_id: string;
@@ -156,6 +158,7 @@ export const postRouter = createTRPCRouter({
           };
         };
       };
+      console.log("🚀 ~ prolongate:publicProcedure ~ body:", JSON.stringify(body, null, 2));
 
       const prolongatedPdfUrl = body.data.outputs.files
         .at(0)
@@ -165,7 +168,7 @@ export const postRouter = createTRPCRouter({
           code: "INTERNAL_SERVER_ERROR",
           message: "Prolongated PDF URL not found",
         });
-      await ctx.db.prolongatedPdf.create({
+      const prolongatedPdf = await ctx.db.prolongatedPdf.create({
         data: {
           url: prolongatedPdfUrl,
           postId: input.id,
@@ -174,6 +177,7 @@ export const postRouter = createTRPCRouter({
       await ctx.db.post.update({
         where: { id: input.id },
         data: {
+          initDate: prolongatedPdf.createdAt.toISOString(),
           status: SubmissionStatus.PROLONGATED,
         },
       });

@@ -13,6 +13,7 @@ MVP Dify workflow to execute as a fully self-hosted solution without need of int
 * run 'ollama serve'
   * capture port
 * run 'cd rest-runner && python3 runner.py'
+* rename dify/.env.example -> dify/.env
 * run 'cd dify && docker compose up -d'
   * open http://localhost/app/
   * install Ollama plugin with custom local LLM provider using port from previous step

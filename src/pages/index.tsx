@@ -14,9 +14,23 @@ import { api } from "~/utils/api";
 import Link from "next/link";
 import { cn } from "~/utils";
 import { formatDate } from "~/utils/format-date";
+import { SubmissionStatus } from "generated/prisma";
+
+const order = [
+  "INITIALIZED",
+  "ANALYZED",
+  "IN_PROGRESS",
+  "PROLONGATED",
+  "COMPLETED",
+  "DECISION_MADE",
+];
 
 export default function Home() {
   const { data: submissions } = api.post.getAll.useQuery();
+
+  const submissionsSorted = submissions?.sort(
+    (a, b) => order.indexOf(a.status) - order.indexOf(b.status),
+  );
 
   return (
     <>
@@ -47,8 +61,8 @@ export default function Home() {
             />
           </div>
           <p className="text-2xl text-white">
-            {submissions?.length
-              ? submissions.map((submission) => {
+            {submissionsSorted?.length
+              ? submissionsSorted.map((submission) => {
                   const initDate = new Date(
                     submission?.initDate ?? "2000-01-01",
                   );
@@ -75,7 +89,12 @@ export default function Home() {
                             <div
                               className={cn("text-[#009900]", {
                                 "text-[#ff0000]":
-                                  deadline.getTime() < new Date().getTime(),
+                                  deadline.getTime() < new Date().getTime() &&
+                                  submission.status !==
+                                    SubmissionStatus.DECISION_MADE,
+                                "text-[#FFD700]":
+                                  submission.status ===
+                                  SubmissionStatus.DECISION_MADE,
                               })}
                             >
                               {formatDate(deadline)}

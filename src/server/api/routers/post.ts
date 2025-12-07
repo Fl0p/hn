@@ -226,7 +226,7 @@ export const postRouter = createTRPCRouter({
                 type: "document",
                 transfer_method: "local_file",
                 url: "",
-                upload_file_id: "5cfe3434-07be-434b-b0aa-2babb22cd045",
+                upload_file_id: input.name,
               },
             },
             response_mode: "blocking",

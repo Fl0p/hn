@@ -147,7 +147,7 @@ export const postRouter = createTRPCRouter({
           }),
         },
       );
-      
+
       const body = (await response.json()) as unknown as {
         task_id: string;
         workflow_run_id: string;
@@ -158,7 +158,10 @@ export const postRouter = createTRPCRouter({
           };
         };
       };
-      console.log("🚀 ~ prolongate:publicProcedure ~ body:", JSON.stringify(body, null, 2));
+      console.log(
+        "🚀 ~ prolongate:publicProcedure ~ body:",
+        JSON.stringify(body, null, 2),
+      );
 
       const prolongatedPdfUrl = body.data.outputs.files
         .at(0)
@@ -186,13 +189,77 @@ export const postRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string().min(1),
-        decisionPdfUrl: z.string().min(1),
+        name: z.string().min(1),
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const response = await fetch(
+        "https://dify.aimost.pl/v1/workflows/bc67dbde-30ed-412b-bc3a-f6ac47873560/run",
+        {
+          method: "POST",
+          headers: {
+            accept: "*/*",
+            "accept-language": "en-US,en;q=0.9,ru;q=0.8",
+            "content-type": "application/json",
+            origin: "https://dify.aimost.pl",
+            priority: "u=1, i",
+            referer: "https://dify.aimost.pl/workflow/Bnva3eofRRaZJnNM",
+            "sec-ch-ua":
+              '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"',
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": '"macOS"',
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-origin",
+            "user-agent":
+              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+            "x-app-code": "Bnva3eofRRaZJnNM",
+            "x-app-passport":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI0NzgzMDE0NS1hY2E5LTQ3YzAtYjI4Yi1hOTAxOWM4YTg2ODUiLCJzdWIiOiJXZWIgQVBJIFBhc3Nwb3J0IiwiYXBwX2lkIjoiNDc4MzAxNDUtYWNhOS00N2MwLWIyOGItYTkwMTljOGE4Njg1IiwiYXBwX2NvZGUiOiJCbnZhM2VvZlJSYVpKbk5NIiwiZW5kX3VzZXJfaWQiOiJmMmU4N2NkZC0xYzZiLTQwZDAtODg5Ny0zZmI0NmFhNmRiMjMifQ.9BqdADb3JqFx3PsUifEF3dp9RE5AnwQ7bYp4ahC85W4",
+            "x-csrf-token":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NjUwNzYyNzcsInN1YiI6Ijc1ODFhN2FhLTNiYzgtNDAxMS1iNGU5LTJjNDY4MDA5ZmY0NSJ9.omeb6QXDm2xH96AcvoUQy0NAGPqkSYp6QwyF-272ryI",
+            Authorization: "Bearer app-VE5dt7EtjbxVddCGt2Bvo7j7",
+          },
+          body: JSON.stringify({
+            inputs: {
+              odwolanie: {
+                type: "document",
+                transfer_method: "local_file",
+                url: "",
+                upload_file_id: "5cfe3434-07be-434b-b0aa-2babb22cd045",
+              },
+            },
+            response_mode: "blocking",
+            user: "user9@aimost.pl",
+          }),
+        },
+      );
+      const body = (await response.json()) as unknown as {
+        task_id: string;
+        workflow_run_id: string;
+        data: {
+          id: string;
+          outputs: {
+            files: Array<{ url: string }>;
+          };
+        };
+      };
+      console.log(
+        "🚀 ~ makeDecision:publicProcedure ~ body:",
+        JSON.stringify(body, null, 2),
+      );
+      const decisionPdfUrl = body.data.outputs.files
+        .at(0)
+        ?.url.replace("http://api:5001/", "https://dify.aimost.pl/");
+      if (!decisionPdfUrl)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Prolongated PDF URL not found",
+        });
+
       await ctx.db.decisionPdf.create({
         data: {
-          url: input.decisionPdfUrl,
+          url: decisionPdfUrl,
           postId: input.id,
         },
       });

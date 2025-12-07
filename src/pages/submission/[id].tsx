@@ -203,6 +203,69 @@ const QuestionPage = ({ id }: Props) => {
           </div>
         </dl>
       </section>
+      {/* //MOCk */}
+      {submission?.caseNumber === "KP-TP-III.5222.7.16.2022.EL" ? <div>
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-6 space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">Analiza sprawy</h3>
+            
+            <div className="space-y-4">
+              <div className="flex gap-22">
+              <div>
+                <h4 className="text-sm font-medium text-slate-700 uppercase tracking-wide mb-2">Fakty</h4>
+                <ul className="space-y-1 text-sm">
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#009900] rounded-full"></span>
+                    <span>Ogłoszenia: <span className="font-medium text-green-700">TAK</span></span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#009900] rounded-full"></span>
+                    <span>Wyjazdy zagraniczne: <span className="font-medium text-green-700">TAK</span></span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#009900] rounded-full"></span>
+                    <span>Pobieranie opłat: <span className="font-medium text-green-700">TAK</span></span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#009900] rounded-full"></span>
+                    <span>Grupy z opiekunami: <span className="font-medium text-green-700">TAK</span></span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#009900] rounded-full"></span>
+                    <span>Brak wpisu: <span className="font-medium text-red-700">TAK</span></span>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-medium text-slate-700 uppercase tracking-wide mb-2">Przepisy</h4>
+                <ul className="space-y-1 text-sm">
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#009900] rounded-full"></span>
+                    <span>Art. 4 pkt 2 UUPT: <span className="font-medium text-green-700">SPEŁNIONE</span></span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-[#009900] rounded-full"></span>
+                    <span>Art. 30 ust. 1–8: <span className="font-medium text-red-700">NARUSZONE</span></span>
+                  </li>
+                </ul>
+              </div>
+              </div>
+
+              <div className="border-t border-slate-200 pt-4">
+                <h4 className="text-sm font-medium text-slate-700 uppercase tracking-wide mb-2">Zalecenie</h4>
+                <div className="bg-amber-50 border border-amber-200 rounded-md p-3">
+                  <p className="text-sm text-amber-800">
+                    <span className="font-medium">Działalność organizatora turystyki bez wpisu</span>
+                    <span className="mx-2">→</span>
+                    <span className="font-semibold">3 lata zakazu</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> : null}
 
       <section className="space-y-4">
         <div>

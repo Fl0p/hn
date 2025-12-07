@@ -60,14 +60,9 @@ export default function Home() {
           <Button size="sm">Ustawienia</Button>
         </div>
       </header>
-      <main className="flex min-h-screen flex-col items-center justify-center">
+      <main className="flex min-h-[calc(100vh-64px)] flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <Link href="/case/new">
-            <Button variant="default" size="lg">
-              Dodaj sprawę
-            </Button>
-          </Link>
-          <div className="w-full max-w-2xl">
+          <div className="w-3/4 max-w-3xl">
             <label
               htmlFor="case-search"
               className="mb-2 block text-xl font-semibold text-white"

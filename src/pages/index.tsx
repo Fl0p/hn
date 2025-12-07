@@ -12,6 +12,8 @@ import {
 
 import { api } from "~/utils/api";
 import Link from "next/link";
+import { cn } from "~/utils";
+import { formatDate } from "~/utils/format-date";
 
 export default function Home() {
   const { data: submissions } = api.post.getAll.useQuery();
@@ -41,35 +43,52 @@ export default function Home() {
               id="case-search"
               type="text"
               placeholder="Wprowadź numer sprawy lub słowa kluczowe..."
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-purple-500 focus:ring-2 focus:ring-purple-500 focus:outline-none"
             />
           </div>
           <p className="text-2xl text-white">
             {submissions?.length
-              ? submissions.map((submission) => (
-                  <Item
-                    variant="outline"
-                    size="sm"
-                    asChild
-                    key={submission.id}
-                    className="m-5"
-                  >
-                    <Link href={`/submission/${submission.id}`}>
-                      <ItemMedia>
-                        <BadgeCheckIcon className="size-5" />
-                      </ItemMedia>
-                      <ItemContent className="flex flex-row gap-2">
-                        <ItemTitle>{submission.name}</ItemTitle>
-                        <ItemDescription>
-                          Status: {submission.status}
-                        </ItemDescription>
-                      </ItemContent>
-                      <ItemActions>
-                        <ChevronRightIcon className="size-4" />
-                      </ItemActions>
-                    </Link>
-                  </Item>
-                ))
+              ? submissions.map((submission) => {
+                  const initDate = new Date(
+                    submission?.initDate ?? "2000-01-01",
+                  );
+                  const deadline = new Date(initDate);
+
+                  // add 30 days
+                  deadline.setDate(deadline.getDate() + 30);
+                  return (
+                    <Item
+                      variant="outline"
+                      size="sm"
+                      asChild
+                      key={submission.id}
+                      className="m-5"
+                    >
+                      <Link href={`/submission/${submission.id}`}>
+                        <ItemMedia>
+                          <BadgeCheckIcon className="size-5" />
+                        </ItemMedia>
+                        <ItemContent className="flex flex-row gap-2">
+                          <ItemTitle>{submission.caseNumber}</ItemTitle>
+                          <ItemDescription className="flex flex-row gap-2">
+                            Status: {submission.status}
+                            <div
+                              className={cn("", {
+                                "text-[#ff0000]":
+                                  deadline.getTime() < new Date().getTime(),
+                              })}
+                            >
+                              {formatDate(deadline)}
+                            </div>
+                          </ItemDescription>
+                        </ItemContent>
+                        <ItemActions>
+                          <ChevronRightIcon className="size-4" />
+                        </ItemActions>
+                      </Link>
+                    </Item>
+                  );
+                })
               : "Nothing had been submitted yet."}
           </p>
         </div>

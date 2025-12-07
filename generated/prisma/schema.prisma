@@ -46,7 +46,7 @@ model InitialPdf {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   postId    String   @unique
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@index([url])
   @@index([postId])
@@ -58,7 +58,7 @@ model ProlongatedPdf {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   postId    String
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@index([url])
   @@index([postId])
@@ -70,7 +70,7 @@ model DecisionPdf {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   postId    String
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@index([url])
   @@index([postId])
@@ -82,7 +82,7 @@ model ConversationPdf {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   postId    String
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@index([url])
   @@index([postId])

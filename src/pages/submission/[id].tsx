@@ -1,21 +1,10 @@
 import { type GetStaticPropsContext, type InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
+import { cn } from "~/utils";
 import { api } from "~/utils/api";
+import { formatDate } from "~/utils/format-date";
 import { prefetchHelper } from "~/utils/prefetchHelper";
-
-const formatDate = (date?: Date | null) => {
-  if (!date) return "—";
-  try {
-    return date.toLocaleDateString("pl-PL", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  } catch {
-    return "—";
-  }
-};
 
 export const getServerSideProps = async (context: GetStaticPropsContext) => {
   const id = context.params?.id;
@@ -81,7 +70,7 @@ const QuestionPage = ({ id }: Props) => {
     documents: { id: string; url: string }[];
   }[] = [
     {
-      title: "Pierwotny PDF",
+      title: "Odwołanie",
       description: "Oryginalny dokument zgłoszeniowy",
       documents: submission?.initialPdf ? [submission.initialPdf] : [],
     },
@@ -102,6 +91,12 @@ const QuestionPage = ({ id }: Props) => {
     },
   ];
 
+  const initDate = new Date(submission?.initDate ?? "2000-01-01");
+  const deadline = new Date(initDate);
+
+  // add 30 days
+  deadline.setDate(deadline.getDate() + 30);
+
   return (
     <div className="m-10 space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -112,7 +107,7 @@ const QuestionPage = ({ id }: Props) => {
           <Button
             variant="outline"
             onClick={handleAnalyze}
-            disabled={isProlongating}
+            disabled={isAnalyze}
           >
             {isAnalyze ? "Analizowanie..." : "Analizuj"}
           </Button>
@@ -182,7 +177,19 @@ const QuestionPage = ({ id }: Props) => {
               Data zgłoszenia
             </dt>
             <dd className="text-base font-medium text-slate-900">
-              {formatDate(new Date(submission?.initDate ?? "2000-01-01"))}
+              {formatDate(initDate)}
+            </dd>
+          </div>
+          <div className="space-y-1">
+            <dt className="text-xs tracking-wide text-slate-500 uppercase">
+              Termin odpowiedzi
+            </dt>
+            <dd
+              className={cn("text text-base font-medium text-slate-900", {
+                "text-[#ff0000]": deadline.getTime() < new Date().getTime(),
+              })}
+            >
+              {formatDate(deadline)}
             </dd>
           </div>
         </dl>
